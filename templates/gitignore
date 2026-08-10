@@ -6,7 +6,9 @@
 
 # Quarto build cache and rendered output.
 # The site is published to the gh-pages branch, so _book/ never belongs on main.
-.quarto/
+# Note the leading slash on /.quarto/ — that is the exact line Quarto looks
+# for, and it appends its own copy on every render if it does not find it.
+/.quarto/
 /_book/
 /_site/
 
