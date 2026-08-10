@@ -1,0 +1,56 @@
+# ---------------------------------------------------------------------------
+# Shared by every lecture-note book. Keep the copies identical; anything
+# repo-specific belongs in .git/info/exclude instead.
+# Source of truth: zi-ang-liu/quarto-lecture-notes/templates/gitignore
+# ---------------------------------------------------------------------------
+
+# Quarto build cache and rendered output.
+# The site is published to the gh-pages branch, so _book/ never belongs on main.
+.quarto/
+/_book/
+/_site/
+
+# Per-document render output left beside the source: figure-latex/, libs/ and
+# pandoc's mediabag (which re-derives PDFs from the tracked .svg sources).
+**/*_files/
+
+# Site assets from an older website-style render
+/site_libs/
+/search.json
+
+# Intentionally NOT ignored:
+#   _freeze/      execute-freeze cache — lets CI render without re-running code
+#   _extensions/  pinned extension versions (lecture-notes theme, pseudocode)
+
+# Quarto intermediate notebooks, including the numbered variants it leaves behind
+**/*.quarto_ipynb
+**/*.quarto_ipynb_*
+
+# LaTeX intermediates from PDF renders
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+/.conda/
+/.venv/
+/venv/
+
+# Private teaching material — must never reach a public site
+/exam/
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.$*.bkp
