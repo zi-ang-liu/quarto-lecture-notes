@@ -77,9 +77,25 @@ code:not(.sourceCode) {
   border-radius: 0 $border-radius $border-radius 0;
 }
 
-.example, .exercise {
+.theorem-title {
+  color: $indigo;
+}
+
+// #exm- — a worked example the reader follows along with.
+.example {
   border-left-color: $teal;
   background: rgba($teal, .09);
+
+  .theorem-title { color: $teal; }
+}
+
+// #exr- — an exercise the reader is asked to do. Deliberately a different
+// accent from .example so the two are told apart at a glance.
+.exercise {
+  border-left-color: $amber;
+  background: rgba($amber, .1);
+
+  .theorem-title { color: $amber; }
 }
 
 .table {
