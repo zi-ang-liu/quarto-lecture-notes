@@ -103,6 +103,12 @@ on:
 
 jobs:
   book:
+    # Required. A reusable workflow cannot request more permission than the
+    # calling job holds, so publishing to gh-pages has to be granted here —
+    # otherwise the run fails to even start with "is requesting
+    # 'contents: write', but is only allowed 'contents: read'".
+    permissions:
+      contents: write
     uses: zi-ang-liu/quarto-lecture-notes/.github/workflows/book.yml@main
     with:
       update-extensions: ${{ github.event_name == 'repository_dispatch' }}
