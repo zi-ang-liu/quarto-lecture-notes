@@ -1,0 +1,69 @@
+name: Build & publish book
+
+# Reusable workflow shared by every lecture-notes book repo. A book repo calls
+# it with a six-line caller workflow — see README.md.
+
+on:
+  workflow_call:
+    inputs:
+      quarto-version:
+        description: Quarto version to build with.
+        type: string
+        default: "1.9.38"
+      to:
+        description: Format to render. Defaults to HTML only; PDF needs a TeX toolchain.
+        type: string
+        default: "lecture-html"
+      python-version:
+        description: Set to e.g. "3.12" for books with executed Python chunks. Empty skips Python setup.
+        type: string
+        default: ""
+      tinytex:
+        description: Install TinyTeX. Only needed when `to` includes a PDF format.
+        type: boolean
+        default: false
+      update-extensions:
+        description: Pull the newest lecture-notes extension before rendering.
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: ${{ inputs.quarto-version }}
+          tinytex: ${{ inputs.tinytex }}
+
+      - name: Set up Python
+        if: inputs.python-version != ''
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+
+      - name: Install Python dependencies
+        if: inputs.python-version != '' && hashFiles('requirements.txt') != ''
+        run: pip install -r requirements.txt
+
+      # Only on a theme-updated dispatch. Normal pushes render with whatever
+      # extension version is committed in the repo, so local and CI output match.
+      - name: Update lecture-notes extension
+        if: inputs.update-extensions
+        run: quarto update zi-ang-liu/quarto-lecture-notes --no-prompt
+
+      - name: Render
+        run: quarto render --to ${{ inputs.to }}
+
+      - uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+          render: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

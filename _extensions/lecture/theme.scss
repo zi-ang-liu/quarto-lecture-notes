@@ -1,0 +1,174 @@
+/*-- scss:defaults --*/
+
+// Colour and font choices live in _brand.yml. This file owns layout, spacing
+// and component styling only, so there is exactly one place to change a colour.
+// Every variable here uses !default so the brand layer always wins.
+
+// Palette mirror. The rules below name these directly, and !default means the
+// brand layer's values win wherever it defines them — this block only keeps the
+// stylesheet compiling if the brand file is ever absent.
+$ink:                   #16212d !default;
+$slate:                 #5b6b7c !default;
+$mist:                  #e7ecf1 !default;
+$paper:                 #ffffff !default;
+$indigo:                #2c5f8a !default;
+$teal:                  #137a72 !default;
+$amber:                 #b06e00 !default;
+$crimson:               #b03535 !default;
+
+$font-size-root:        17px !default;
+$body-color:            $ink !default;
+
+$border-radius:         .375rem !default;
+$border-radius-sm:      .25rem !default;
+$border-radius-lg:      .5rem !default;
+
+$headings-font-weight:  600 !default;
+$h1-font-size:          1.9rem !default;
+$h2-font-size:          1.5rem !default;
+$h3-font-size:          1.22rem !default;
+$h4-font-size:          1.05rem !default;
+
+$code-color:            $crimson !default;
+$code-bg:               rgba($indigo, .06) !default;
+$pre-bg:                #f7f9fb !default;
+
+$table-border-color:    $mist !default;
+$table-striped-bg:      rgba($indigo, .03) !default;
+
+$toc-font-size:         .85rem !default;
+$sidebar-font-size:     .9rem !default;
+$sidebar-items-gap-spacing: .3em !default;
+
+$callout-border-width:  3px !default;
+
+/*-- scss:rules --*/
+
+// ---------------------------------------------------------------- reading ---
+// Lecture notes are read top to bottom, so keep the measure narrow enough to
+// scan and give headings room to act as section breaks.
+
+main.content {
+  max-width: 46rem;
+}
+
+#quarto-document-content {
+  p, li {
+    line-height: 1.8;
+  }
+}
+
+h2 {
+  border-bottom: 1px solid $mist;
+  padding-bottom: .3rem;
+  margin-top: 2.75rem;
+}
+
+h3 { margin-top: 2rem; }
+
+// Japanese text needs a touch more space between a heading and its body copy
+// than the Bootstrap default leaves.
+h1 + p, h2 + p, h3 + p { margin-top: .85rem; }
+
+// ------------------------------------------------------------------- code ---
+
+pre.sourceCode {
+  border: 1px solid $mist;
+  border-radius: $border-radius;
+  padding: .85rem 1rem;
+}
+
+code:not(.sourceCode) {
+  padding: .12em .35em;
+  border-radius: $border-radius-sm;
+}
+
+.cell-output pre {
+  border-left: 3px solid $mist;
+  background: transparent;
+}
+
+// ------------------------------------------------------------ callouts -----
+
+.callout {
+  border-radius: $border-radius;
+}
+
+.callout.callout-style-default > .callout-header {
+  font-weight: 600;
+}
+
+// ------------------------------------------------------------ crossrefs ----
+// Theorem-like blocks show up in every one of these books; give them a
+// consistent look instead of leaving them as bare paragraphs.
+
+.theorem, .lemma, .corollary, .proposition, .definition, .example, .exercise {
+  border-left: $callout-border-width solid $indigo;
+  background: rgba($indigo, .035);
+  padding: .85rem 1.1rem;
+  margin: 1.4rem 0;
+  border-radius: 0 $border-radius $border-radius 0;
+}
+
+.example, .exercise {
+  border-left-color: $teal;
+  background: rgba($teal, .04);
+}
+
+.proof {
+  margin: 1.2rem 0;
+}
+
+// ---------------------------------------------------------------- tables ---
+
+.table {
+  font-size: .95rem;
+
+  > thead {
+    border-bottom: 2px solid $slate;
+  }
+
+  th {
+    font-weight: 600;
+  }
+}
+
+// ------------------------------------------------------------- navigation --
+
+.sidebar-item-text {
+  line-height: 1.45;
+}
+
+.sidebar nav[role="doc-toc"] > ul li a {
+  padding-top: .18rem;
+  padding-bottom: .18rem;
+}
+
+#quarto-margin-sidebar .quarto-alternate-formats {
+  margin-top: 1rem;
+}
+
+// -------------------------------------------------------------- footer -----
+
+.nav-footer {
+  font-size: .85rem;
+  color: $slate;
+}
+
+// ---------------------------------------------------------------- math -----
+// KaTeX display equations sit a little tight against surrounding prose.
+
+.katex-display {
+  margin: 1.4em 0;
+}
+
+// --------------------------------------------------------------- figures ---
+
+figure {
+  margin: 1.8rem auto;
+}
+
+figcaption {
+  font-size: .875rem;
+  color: $slate;
+}

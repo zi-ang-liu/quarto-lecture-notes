@@ -1,0 +1,49 @@
+meta:
+  name: Lecture Notes — Ziang Liu
+
+color:
+  palette:
+    ink: "#16212d"
+    slate: "#5b6b7c"
+    mist: "#e7ecf1"
+    paper: "#ffffff"
+    indigo: "#2c5f8a"
+    teal: "#137a72"
+    amber: "#b06e00"
+    crimson: "#b03535"
+  foreground: ink
+  background: paper
+  primary: indigo
+  secondary: slate
+  tertiary: mist
+  success: teal
+  info: indigo
+  warning: amber
+  danger: crimson
+  link: indigo
+
+typography:
+  fonts:
+    - family: Noto Sans JP
+      source: google
+      weight: [300, 400, 500, 700]
+      style: normal
+    - family: JetBrains Mono
+      source: google
+      weight: [400, 700]
+      style: normal
+  base:
+    family: Noto Sans JP
+    weight: 400
+    size: 17px
+    line-height: 1.75
+  headings:
+    family: Noto Sans JP
+    weight: 600
+    line-height: 1.35
+  monospace:
+    family: JetBrains Mono
+    size: 0.88em
+  link:
+    color: primary
+    decoration: underline

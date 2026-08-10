@@ -1,0 +1,109 @@
+/*-- scss:defaults --*/
+
+// Dark counterpart to theme.scss, layered on top of `cyborg`. Only the values
+// that have to invert are redefined; everything structural is inherited.
+
+$ink:                   #dfe6ee !default;
+$slate:                 #9aa9b8 !default;
+$mist:                  #2b3440 !default;
+$paper:                 #131a21 !default;
+$indigo:                #6fa8dc !default;
+$teal:                  #4bbfae !default;
+$amber:                 #d9a441 !default;
+$crimson:               #e07a7a !default;
+
+$font-size-root:        17px !default;
+$body-color:            $ink !default;
+$body-bg:               $paper !default;
+
+$border-radius:         .375rem !default;
+$border-radius-sm:      .25rem !default;
+
+$headings-font-weight:  600 !default;
+$h1-font-size:          1.9rem !default;
+$h2-font-size:          1.5rem !default;
+$h3-font-size:          1.22rem !default;
+
+$code-color:            $crimson !default;
+$code-bg:               rgba($indigo, .12) !default;
+$pre-bg:                #1a222b !default;
+
+$table-border-color:    $mist !default;
+$table-striped-bg:      rgba($indigo, .06) !default;
+
+/*-- scss:rules --*/
+
+main.content {
+  max-width: 46rem;
+}
+
+#quarto-document-content {
+  p, li {
+    line-height: 1.8;
+  }
+}
+
+h2 {
+  border-bottom: 1px solid $mist;
+  padding-bottom: .3rem;
+  margin-top: 2.75rem;
+}
+
+h3 { margin-top: 2rem; }
+
+h1 + p, h2 + p, h3 + p { margin-top: .85rem; }
+
+pre.sourceCode {
+  border: 1px solid $mist;
+  border-radius: $border-radius;
+  padding: .85rem 1rem;
+}
+
+code:not(.sourceCode) {
+  padding: .12em .35em;
+  border-radius: $border-radius-sm;
+}
+
+.cell-output pre {
+  border-left: 3px solid $mist;
+  background: transparent;
+}
+
+.theorem, .lemma, .corollary, .proposition, .definition, .example, .exercise {
+  border-left: 3px solid $indigo;
+  background: rgba($indigo, .09);
+  padding: .85rem 1.1rem;
+  margin: 1.4rem 0;
+  border-radius: 0 $border-radius $border-radius 0;
+}
+
+.example, .exercise {
+  border-left-color: $teal;
+  background: rgba($teal, .09);
+}
+
+.table {
+  font-size: .95rem;
+
+  > thead {
+    border-bottom: 2px solid $slate;
+  }
+
+  th {
+    font-weight: 600;
+  }
+}
+
+.katex-display {
+  margin: 1.4em 0;
+}
+
+figcaption {
+  font-size: .875rem;
+  color: $slate;
+}
+
+.nav-footer {
+  font-size: .85rem;
+  color: $slate;
+}

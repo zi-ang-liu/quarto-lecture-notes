@@ -1,0 +1,11 @@
+% Shared LaTeX preamble for the lecture-notes PDF format.
+%
+% Loads the pseudocode packages the books rely on and applies the comment
+% style used across all of them. Books that do not use the `pseudocode`
+% filter are unaffected — the packages are simply unused.
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% Render algorithm comments as "-> comment" rather than the default triangle.
+\algrenewcommand{\algorithmiccomment}[1]{\hskip3em$\rightarrow$ #1}

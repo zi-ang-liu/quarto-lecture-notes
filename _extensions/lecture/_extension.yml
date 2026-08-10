@@ -1,0 +1,60 @@
+title: Lecture Notes
+author: Ziang Liu
+version: 1.0.0
+quarto-required: ">=1.9.0"
+contributes:
+  formats:
+    common:
+      citations-hover: true
+      crossref:
+        chapters: true
+
+    html:
+      theme:
+        light:
+          - cosmo
+          - brand
+          - theme.scss
+        dark:
+          - cyborg
+          - brand
+          - theme-dark.scss
+      html-math-method: katex
+      mermaid:
+        format: svg
+        theme: neutral
+      toc: true
+      toc-depth: 3
+      code-copy: true
+      code-overflow: wrap
+      anchor-sections: true
+      smooth-scroll: true
+      link-external-newwindow: true
+      link-external-icon: true
+      fig-align: center
+      tbl-cap-location: top
+
+    pdf:
+      pdf-engine: lualatex
+      documentclass: ltjbook
+      classoption:
+        - oneside
+        - openany
+      fontsize: 11pt
+      linestretch: 1.15
+      mainfont: Noto Sans JP
+      sansfont: Noto Sans JP
+      toc: true
+      toc-depth: 1
+      number-sections: true
+      colorlinks: true
+      linkcolor: blue
+      urlcolor: blue
+      geometry:
+        - top=25mm
+        - bottom=28mm
+        - left=25mm
+        - right=25mm
+      use-rsvg-convert: true
+      include-in-preamble:
+        file: preamble.tex

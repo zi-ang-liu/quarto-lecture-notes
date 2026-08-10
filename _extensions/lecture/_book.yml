@@ -1,0 +1,32 @@
+# Project-level metadata shared by every lecture-notes book.
+#
+# A Quarto *format* extension can only contribute keys under `format:`, so the
+# shared `book:` keys live here and are pulled in per repo with:
+#
+#   metadata-files:
+#     - _extensions/zi-ang-liu/lecture/_book.yml
+#
+# Anything a single book needs to differ on (title, site-url, repo-url,
+# chapters, and an English author name for rl-book) is set in that book's own
+# _quarto.yml, which wins over this file.
+
+book:
+  author:
+    - name: "劉子昂"
+      id: liuziang
+      orcid: 0000-0002-1364-3502
+      url: "https://zi-ang-liu.github.io"
+      affiliation:
+        - name: 法政大学
+          department: 経営システム工学科
+  date: today
+  search: true
+  twitter-card: true
+  sidebar:
+    style: floating
+    collapse-level: 1
+  page-navigation: true
+  back-to-top-navigation: true
+  page-footer:
+    border: true
+    center: "© 2026 Ziang Liu. All rights reserved."
