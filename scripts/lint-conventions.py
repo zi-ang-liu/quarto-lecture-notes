@@ -4,7 +4,7 @@
     python3 scripts/lint-conventions.py ~/Github
 
 Only the rules that can be checked mechanically. Everything reported here is
-either a silent rendering failure or a rule from CONVENTION.md section 5.
+either a silent rendering failure or a rule from CONVENTION.md section 6.
 """
 
 import pathlib
@@ -31,7 +31,37 @@ def chapters(book: pathlib.Path):
     return [book / rel for rel in sorted(listed) if (book / rel).exists()]
 
 
-def check(path: pathlib.Path, rel: str):
+def is_japanese(book: pathlib.Path) -> bool:
+    """§5 applies to the Japanese books only; rl-book is lang: en."""
+    cfg = book / "_quarto.yml"
+    return bool(cfg.exists() and re.search(
+        r"^lang:\s*ja\b", cfg.read_text(encoding="utf-8"), re.M))
+
+
+def prose_lines(text: str):
+    """(lineno, line) for prose only — the parts §5 actually governs.
+
+    Dropped: fenced code and inline code spans, because the linter cannot tell
+    a string a program really prints from prose the author typed; and 「…」/『…』
+    runs, which are quotations, UI labels, or the punctuation marks themselves
+    under discussion (see computer-literacy-book's IME chapter).
+    """
+    fence = None
+    for n, line in enumerate(text.splitlines(), 1):
+        m = re.match(r"\s*(`{3,}|~{3,})", line)
+        if m:
+            mark = m.group(1)[0] * 3
+            if fence is None:
+                fence = mark
+            elif fence == mark:
+                fence = None
+            continue
+        if fence is None:
+            yield n, re.sub(r"「[^」]*」|『[^』]*』", "",
+                            re.sub(r"`[^`]*`", "", line))
+
+
+def check(path: pathlib.Path, rel: str, ja: bool = False):
     text = path.read_text(encoding="utf-8", errors="replace")
     out = []
 
@@ -73,6 +103,16 @@ def check(path: pathlib.Path, rel: str):
         n = text[:text.index("学習目標")].count("\n") + 1
         out.append((n, "WARN", "学習目標 should be '## 学習目標', not a callout"))
 
+    # 、。 in a Japanese book (§5). Reported once per file, at the first
+    # offending line: the fix is to convert the whole file in one pass.
+    if ja:
+        hits = [n for n, line in prose_lines(text)
+                if "、" in line or "。" in line]
+        if hits:
+            out.append((hits[0], "WARN",
+                        f"{len(hits)} line(s) use 、 or 。 — Japanese books "
+                        f"punctuate with ，． (§5)"))
+
     return [(rel, n, level, msg) for n, level, msg in out]
 
 
@@ -105,8 +145,9 @@ def main() -> int:
         book = root / name
         if not book.is_dir():
             continue
+        ja = is_japanese(book)
         for path in chapters(book):
-            findings += check(path, f"{name}/{path.relative_to(book)}")
+            findings += check(path, f"{name}/{path.relative_to(book)}", ja)
         findings += duplicate_ids(book, name)
 
     errors = [f for f in findings if f[2] == "ERROR"]

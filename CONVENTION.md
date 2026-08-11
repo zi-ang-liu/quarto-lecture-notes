@@ -222,7 +222,42 @@ actually link to them.
 
 ---
 
-## 5. House rules
+## 5. Punctuation in Japanese books
+
+Japanese chapters use **`，` (U+FF0C) and `．` (U+FF0E)** — never `、` and `。`.
+
+| Wrong | Right |
+|---|---|
+| リレーション $R$ とは、部分集合である。 | リレーション $R$ とは，部分集合である． |
+
+This is the horizontal-writing style of Japanese scientific and technical
+writing, and it suits books this mathematical: `，．` are the same marks already
+used inside the formulas, so a sentence that runs from prose into math keeps one
+punctuation style throughout.
+
+The rule covers the whole `.qmd` source — prose, headings, callout and
+environment titles, and Japanese written inside code and comments. Two things
+keep their original punctuation:
+
+- **Verbatim quotations** from an external source.
+- **Anything that must match what actually runs** — a string a program prints,
+  or data reproduced from a file.
+
+Convert **a whole file at a time**. Consistency within a chapter matters more
+than consistency across the shelf, and a half-converted file reads worse than
+either style alone.
+
+`or-book` is the reference: 39 chapters, zero `、` or `。`. Not applicable to
+`rl-book`, which is `lang: en`.
+
+The linter checks this, one warning per file, in books whose `_quarto.yml` says
+`lang: ja`. It reads prose only — fenced code, inline code spans and `「…」`
+quotations are skipped, so the two exceptions above never get flagged, and
+Japanese punctuation inside code is yours to keep consistent by eye.
+
+---
+
+## 6. House rules
 
 1. **Every callout has a title.**
 2. **学習目標 is `## 学習目標`**, never a callout — objectives belong in the TOC.
@@ -237,10 +272,11 @@ actually link to them.
    what to do at the keyboard. Pick one meaning and hold it.
 6. **Never** `:::{note}`, `.callout-info`, or a bare word in braces.
 7. Solutions use `#sol-`; keep them adjacent to the `#exr-` they answer.
+8. **Japanese books punctuate with `，．`**, never `、。` (§5).
 
 ---
 
-## 6. How the theme colours these
+## 7. How the theme colours these
 
 From `_extensions/lecture/theme.scss` — the accent tells the reader the kind of
 block at a glance:
@@ -256,7 +292,7 @@ Change these in `_brand.yml`, never in a book.
 
 ---
 
-## 7. Current usage
+## 8. Current usage
 
 Where the five books stand today, as a baseline to improve on:
 
@@ -269,11 +305,13 @@ Where the five books stand today, as a baseline to improve on:
 | `#thm-` / `#alg-` / `#lem-` / `#prp-` / `#rem-` | 8 / 6 / 5 / 3 / 1 |
 | callouts (`note` 73, `tip` 24) | 97 |
 | **of which still untitled** | **76** |
+| Japanese chapters whose prose still uses `、` or `。` | **55 of 154** |
 
-Two things visible in that table. Titling the 76 untitled callouts is the
-highest-value cleanup available. And `#thm-` at 8 against `#def-` at 38 is low
-for books this mathematical — some results currently written as prose or as
-`callout-note` should be `#thm-` or `#prp-` so they can be referenced.
+Three things visible in that table. Titling the 76 untitled callouts is the
+highest-value cleanup available. `#thm-` at 8 against `#def-` at 38 is low for
+books this mathematical — some results currently written as prose or as
+`callout-note` should be `#thm-` or `#prp-` so they can be referenced. And 55
+chapters still punctuate with `、。`, every one of them outside `or-book` (§5).
 
 Run `python3 scripts/lint-conventions.py ~/Github` to check the rules that can
 be checked mechanically.
