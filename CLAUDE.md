@@ -78,6 +78,15 @@ Confirm with the author before pushing unless they have already asked for it.
 ## Environment
 
 - Renders that execute code need `QUARTO_PYTHON=/opt/miniconda3/envs/quarto-book/bin/python`.
-  The system `python3` has no jupyter.
-- `gh` is not installed, so CI logs are not readable from here. If a workflow
-  fails, ask the author to paste the error.
+  The system `python3` has no jupyter. That env is Python **3.10**, which is
+  what each book's `publish.yml` requests and what `requirements.txt` pins
+  against — keep the three in step.
+- `gh` is installed and authenticated as `zi-ang-liu`, so a push is verifiable
+  from here. Don't guess whether a build passed:
+
+  ```bash
+  gh run list --limit 3                 # from the book's directory
+  gh run watch <run-id> --exit-status   # blocks until the run finishes
+  gh run view <run-id> --log            # e.g. to confirm _freeze/ spared
+                                        # CI from executing any Python
+  ```
