@@ -11,6 +11,11 @@ Each book keeps its own repo. Everything the books had in common — theme, colo
 fonts, PDF settings, author block, footer, CI — lives here instead, so a design
 change is one commit in one place.
 
+**[CONVENTION.md](CONVENTION.md)** is the writing standard for the books —
+when to use a callout, a theorem environment, or a plain heading, and the
+cross-reference prefixes for each. `python3 scripts/lint-conventions.py ~/Github`
+checks the mechanical rules.
+
 ## What's in here
 
 | File | Owns |

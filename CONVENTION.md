@@ -1,0 +1,225 @@
+# Writing conventions
+
+House rules for the five lecture-note books
+([or-book](https://github.com/zi-ang-liu/or-book),
+[rl-book](https://github.com/zi-ang-liu/rl-book),
+[data-science-book](https://github.com/zi-ang-liu/data-science-book),
+[computer-literacy-book](https://github.com/zi-ang-liu/computer-literacy-book),
+[database-book](https://github.com/zi-ang-liu/database-book)).
+
+Everything here was checked against Quarto 1.9.38 with the `lecture` extension
+and `lang: ja`.
+
+---
+
+## 1. Which form for which content
+
+The single decision that matters. All three forms produce a box; they mean
+different things to a student.
+
+| The content is… | Use | Why |
+|---|---|---|
+| Something the student **must know**, that you may want to point back to | a **theorem-type** block (`#def-`, `#thm-`, `#exm-`, `#exr-`…) | numbered, cross-referenceable, indexed as course material |
+| **Chapter structure** — 学習目標, まとめ | a plain `##` **heading section** | appears in the sidebar TOC, so students can jump to it |
+| **Skippable enrichment** — history, external links, tool tips, a pitfall | a **callout**, always titled | signals "you may skip this" |
+
+A callout never appears in the sidebar TOC: a leading heading inside it is
+absorbed into the callout title. That is the main reason 学習目標 is a section
+and not a callout.
+
+**Do not put core content in a callout.** A definition or a proposition inside
+`callout-note` reads as optional and cannot be referenced.
+
+---
+
+## 2. Theorem-type environments
+
+Numbered, boxed, cross-referenceable. The label prefix chooses the environment —
+there is no class to write.
+
+| Prefix | Printed (`lang: ja`) | Printed (`lang: en`) | LaTeX environment |
+|---|---|---|---|
+| `#thm-` | 定理 | Theorem | `theorem` |
+| `#lem-` | 補題 | Lemma | `lemma` |
+| `#cor-` | 系 | Corollary | `corollary` |
+| `#prp-` | 命題 | Proposition | `proposition` |
+| `#cnj-` | 予想 | Conjecture | `conjecture` |
+| `#def-` | 定義 | Definition | `definition` |
+| `#exm-` | 例 | Example | `example` |
+| `#exr-` | 練習 | Exercise | `exercise` |
+| `#alg-` | *(not localized — prints "Algorithm")* | Algorithm | `algorithm` |
+
+```markdown
+::: {#def-relation}
+リレーション $R$ とは，$D_1 \times \cdots \times D_n$ の部分集合である．
+:::
+
+@def-relation より，…
+```
+
+An optional `## Title` as the first line becomes the environment's name:
+`例 15.1 (最適化問題の例)`.
+
+### Proof-type environments
+
+`proof`, `remark` and `solution` are **not** theorem-type. They render as an
+inline italic run-in title with no box:
+
+| Written as | Printed (`lang: ja`) |
+|---|---|
+| `::: {.proof}` | *証明.* |
+| `::: {#rem-…}` or `::: {.remark}` | *注釈 1.1.* |
+| `::: {#sol-…}` or `::: {.solution}` | *解答.* |
+
+They look nothing like the boxed exercise they usually follow. That is Quarto's
+default, not a bug — but keep it in mind when writing an exercise/solution pair.
+
+---
+
+## 3. Callouts
+
+Five types, no others. `.callout-info` **does not exist** — it degrades to a
+typeless box whose screen-reader label is literally "None".
+
+| Type | Prefix (when referenced) | Printed (`lang: ja`) | Use for |
+|---|---|---|---|
+| `note` | `#nte-` | ノート | a clarification or aside in the argument |
+| `tip` | `#tip-` | ヒント | practical how-to, something to try at the keyboard |
+| `warning` | `#wrn-` | 警告 | a common mistake |
+| `important` | `#imp-` | 重要 | something easy to miss with real consequences |
+| `caution` | `#cau-` | 注意 | a step that is hard to undo |
+
+**Every callout gets a title.** An untitled callout renders as a box labelled
+just ノート — it tells the student to stop, then doesn't say why. Give it a
+title as a leading heading, or with `title=`:
+
+```markdown
+::: {.callout-note}
+### なぜ指数分布は $M$ と書くのか
+…
+:::
+```
+
+### Referenceable callouts
+
+A callout is cross-referenceable when it has **both** an `#<prefix>-` id **and**
+a title. The id comes first, the class second:
+
+```markdown
+::: {#tip-sqlite-install .callout-tip}
+## SQLite のインストール
+…
+:::
+
+詳しくは @tip-sqlite-install を参照．
+```
+
+Without a title the reference will not resolve.
+
+### Syntax that silently fails
+
+Never write these. All three were live bugs in these books:
+
+| Wrong | Renders as | Right |
+|---|---|---|
+| `:::{note}` | `<div class="{note}">` — an unstyled div | `:::{.callout-note}` |
+| `::: {.callout .callout-info}` | typeless box, screen-reader label "None" | `::: {.callout-note}` |
+| `:::{$exm-foo}` | unstyled div, never numbered | `:::{#exm-foo}` |
+
+The braces need a `.` for a class and a `#` for an id. A bare word is neither.
+
+---
+
+## 4. Cross-references in Japanese books
+
+Theorem-type references localize. **Callout and remark references do not** —
+this is a Quarto limitation, not a configuration mistake:
+
+```
+@def-relation  →  定義 1.1      ✅
+@nte-history   →  Note 1.1      ❌ English, in a Japanese sentence
+@rem-caveat    →  Remark 1.1    ❌
+```
+
+Quarto's `_language-ja.yml` defines `callout-note-title: "ノート"` for the box
+header, but has no `crossref-nte-title`, so the inline reference falls back to
+English. Neither `crossref: nte-title:` nor `language: crossref-nte-title:` is
+accepted.
+
+**The fix**, verified working — add to a Japanese book's `_quarto.yml`:
+
+```yaml
+crossref:
+  custom:
+    - {key: nte, kind: float, reference-prefix: "ノート"}
+    - {key: tip, kind: float, reference-prefix: "ヒント"}
+    - {key: wrn, kind: float, reference-prefix: "警告"}
+    - {key: imp, kind: float, reference-prefix: "重要"}
+    - {key: cau, kind: float, reference-prefix: "注意"}
+```
+
+Callouts keep rendering as callouts; only the inline label changes.
+
+> **Do not add `rem` to that list.** It converts remarks into figure-style
+> floats. `@rem-` stays English; prefer a theorem-type block if you need to
+> reference it.
+
+Because of this, in Japanese chapters **prefer a theorem-type block for
+anything you intend to reference**, and give callouts an id only when you
+actually link to them.
+
+---
+
+## 5. House rules
+
+1. **Every callout has a title.**
+2. **学習目標 is `## 学習目標`**, never a callout — objectives belong in the TOC.
+3. When chapter prose follows the objectives, give it its own section. The
+   house pattern is `## 〜とは` (`## 待ち行列とは`, `## 機械語とは`,
+   `## 擬似コードとは`).
+4. **Ids are lowercase, hyphen-separated, and topical**: `#exm-serial-basic`,
+   not `#exm-1`. Numbers renumber themselves; ids should survive reordering.
+5. **`note` vs `tip`**: `note` clarifies the argument, `tip` tells the reader
+   what to do at the keyboard. Pick one meaning and hold it.
+6. **Never** `:::{note}`, `.callout-info`, or a bare word in braces.
+7. Solutions use `#sol-`; keep them adjacent to the `#exr-` they answer.
+
+---
+
+## 6. How the theme colours these
+
+From `_extensions/lecture/theme.scss` — the accent tells the reader the kind of
+block at a glance:
+
+| Block | Accent (light / dark) |
+|---|---|
+| `#exm-` example | teal `#137a72` / `#4bbfae` |
+| `#exr-` exercise | amber `#b06e00` / `#d9a441` |
+| `#thm-` `#lem-` `#cor-` `#prp-` `#def-` … | indigo `#2c5f8a` / `#6fa8dc` |
+| callouts | Quarto's own per-type colours |
+
+Change these in `_brand.yml`, never in a book.
+
+---
+
+## 7. Current usage
+
+Where the five books stand today, as a baseline to improve on:
+
+| | count |
+|---|---|
+| `#exm-` | 148 |
+| `#exr-` | 80 |
+| `#def-` | 38 |
+| `#sol-` | 35 |
+| `#thm-` / `#alg-` / `#lem-` / `#prp-` / `#rem-` | 8 / 6 / 5 / 3 / 1 |
+| callouts (`note` 73, `tip` 24) | 97 |
+| **of which still untitled** | **76** |
+
+Two things visible in that table. Titling the 76 untitled callouts is the
+highest-value cleanup available. And `#thm-` at 8 against `#def-` at 38 is low
+for books this mathematical — some results currently written as prose or as
+`callout-note` should be `#thm-` or `#prp-` so they can be referenced.
+
+Run `python3 scripts/lint-conventions.py ~/Github` to check the rules that can
+be checked mechanically.
