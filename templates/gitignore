@@ -24,10 +24,14 @@
 #   _freeze/      execute-freeze cache — lets CI render without re-running code
 #   _extensions/  pinned extension versions (lecture-notes theme, pseudocode)
 #
-# The one exception inside _freeze/: Quarto recreates site_libs/ there on every
-# render, so tracking it means permanent churn. The rule above has a leading
-# slash and catches only the root copy.
+# Two exceptions inside _freeze/, both page chrome rather than execute output.
+# Quarto recreates site_libs/ there on every render, so tracking it means
+# permanent churn; the rule above has a leading slash and catches only the root
+# copy. Per-document libs/ is the same bootstrap/clipboard/quarto-html bundle,
+# recorded when a chapter is rendered on its own — the book's pages load it from
+# site_libs/, never from _freeze/, so nothing needs it committed.
 _freeze/site_libs/
+_freeze/**/libs/
 
 # Quarto intermediate notebooks, including the numbered variants it leaves behind
 **/*.quarto_ipynb
