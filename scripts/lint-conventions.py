@@ -76,6 +76,28 @@ def check(path: pathlib.Path, rel: str):
     return [(rel, n, level, msg) for n, level, msg in out]
 
 
+def duplicate_ids(book: pathlib.Path, name: str):
+    """Crossref ids must be unique book-wide; Quarto does not warn on collisions."""
+    seen = {}
+    dups = []
+    for path in chapters(book):
+        rel = f"{name}/{path.relative_to(book)}"
+        for n, line in enumerate(path.read_text(encoding="utf-8", errors="replace")
+                                 .splitlines(), 1):
+            if line.lstrip().startswith("<!--"):
+                continue
+            m = re.match(r"\s*:::+ *\{#([\w-]+)\}\s*$", line)
+            if not m:
+                continue
+            key = m.group(1)
+            if key in seen:
+                dups.append((rel, n, "ERROR",
+                             f"duplicate id '#{key}' — also at {seen[key]}"))
+            else:
+                seen[key] = f"{rel}:{n}"
+    return dups
+
+
 def main() -> int:
     root = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else ".").expanduser()
     findings = []
@@ -85,6 +107,7 @@ def main() -> int:
             continue
         for path in chapters(book):
             findings += check(path, f"{name}/{path.relative_to(book)}")
+        findings += duplicate_ids(book, name)
 
     errors = [f for f in findings if f[2] == "ERROR"]
     for rel, n, level, msg in sorted(findings, key=lambda f: (f[2] != "ERROR", f[0], f[1])):

@@ -60,6 +60,51 @@ there is no class to write.
 An optional `## Title` as the first line becomes the environment's name:
 `例 15.1 (最適化問題の例)`.
 
+### Examples, exercises and problem sets
+
+Three forms carry problems. They differ on **who does the work**, and one test
+separates them:
+
+| Form | The test | Numbered | Answer |
+|---|---|---|---|
+| `#exm-` | **The author answers it.** The reader only reads. | 例 15.1 | inside the block |
+| `#exr-` | The reader does it. | 練習 15.1 | a separate `#sol-` |
+| numbered list under `## 練習問題` | four or more short, homogeneous drills done as one batch | no | one answer set for the batch |
+
+**An `#exm-` must never end on an unanswered question.** That is the line
+between the first two rows. A block that poses a problem and stops is an
+exercise, whatever its label says — and because Quarto numbers 例 and 練習 in
+separate sequences, mislabelling it also makes the chapter's exercise count
+wrong for the student.
+
+Posing a question inside an `#exm-` is fine, and usually good writing — as long
+as the same block answers it:
+
+```markdown
+:::{#exm-newsvendor-cost}
+発注量 $S = 100$ … のとき，コスト $g(S, d)$ は以下のように求められる．
+$$ g(100, 120) = 100 $$
+:::
+```
+
+Do **not** convert drill sets into individual `#exr-` blocks. Six one-line SQL
+problems of the same skill, graded as one assignment, belong in a numbered
+list — six numbered frames would be noise. Reach for `#exr-` when a problem is
+substantial enough to reference or answer on its own.
+
+### Solutions
+
+**Give most `#exr-` a `#sol-`.** Two exceptions:
+
+- **Thought problems** — 思考実験 and open-ended discussion prompts, where the
+  point is the reasoning in class, not a final answer.
+- **Very simple problems** — one-step drills whose answer the student can
+  check immediately.
+
+Keep the `#sol-` adjacent to the `#exr-` it answers. Note that `#sol-` is a
+proof-type environment, so it renders as an inline italic *解答.* rather than a
+box — it will not look like the exercise it follows.
+
 ### Proof-type environments
 
 `proof`, `remark` and `solution` are **not** theorem-type. They render as an
@@ -186,6 +231,8 @@ actually link to them.
    `## 擬似コードとは`).
 4. **Ids are lowercase, hyphen-separated, and topical**: `#exm-serial-basic`,
    not `#exm-1`. Numbers renumber themselves; ids should survive reordering.
+   Ids must be **unique across the whole book**, not just within a file —
+   Quarto will not warn you about a collision.
 5. **`note` vs `tip`**: `note` clarifies the argument, `tip` tells the reader
    what to do at the keyboard. Pick one meaning and hold it.
 6. **Never** `:::{note}`, `.callout-info`, or a bare word in braces.
