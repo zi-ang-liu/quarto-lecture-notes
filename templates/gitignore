@@ -23,6 +23,11 @@
 # Intentionally NOT ignored:
 #   _freeze/      execute-freeze cache — lets CI render without re-running code
 #   _extensions/  pinned extension versions (lecture-notes theme, pseudocode)
+#
+# The one exception inside _freeze/: Quarto recreates site_libs/ there on every
+# render, so tracking it means permanent churn. The rule above has a leading
+# slash and catches only the root copy.
+_freeze/site_libs/
 
 # Quarto intermediate notebooks, including the numbered variants it leaves behind
 **/*.quarto_ipynb
