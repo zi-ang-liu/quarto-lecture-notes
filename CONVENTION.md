@@ -47,7 +47,7 @@ there is no class to write.
 | `#def-` | 定義 | Definition | `definition` |
 | `#exm-` | 例 | Example | `example` |
 | `#exr-` | 練習 | Exercise | `exercise` |
-| `#alg-` | *(not localized — prints "Algorithm")* | Algorithm | `algorithm` |
+| `#alg-` | *(not localized — prints "Algorithm"; accepted, see §4)* | Algorithm | `algorithm` |
 
 ```markdown
 ::: {#def-relation}
@@ -146,7 +146,14 @@ header, but has no `crossref-nte-title`, so the inline reference falls back to
 English. Neither `crossref: nte-title:` nor `language: crossref-nte-title:` is
 accepted.
 
-**The fix**, verified working — add to a Japanese book's `_quarto.yml`:
+**This is accepted, not a bug to fix.** Callouts are skippable by definition
+(§1), so they are rarely cited — and the same goes for `#alg-` and `#rem-`.
+An English label in a handful of references is not worth extra configuration
+in every book. The rule that follows from this is the one below: reference
+theorem-type blocks, not callouts.
+
+A working fix exists should that ever change. Verified, but **deliberately not
+applied** — add to a Japanese book's `_quarto.yml`:
 
 ```yaml
 crossref:
