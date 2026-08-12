@@ -94,8 +94,20 @@ code:not(.sourceCode) {
   border-radius: $border-radius;
 }
 
-.callout.callout-style-default > .callout-header {
+// Quarto sizes callout text at .9rem, which reads as a footnote beside the
+// prose around it. In lecture notes a callout carries body copy — a caveat or
+// an aside the reader is meant to actually read — so match the body instead.
+// These selectors mirror Quarto's own, including the `div`: the theme layer is
+// compiled after Bootstrap, so equal specificity wins on source order.
+.callout.callout-style-default > div.callout-header,
+.callout.callout-style-simple > div.callout-header {
+  font-size: 1rem;
   font-weight: 600;
+}
+
+.callout.callout-style-default .callout-body,
+.callout.callout-style-simple .callout-body {
+  font-size: 1rem;
 }
 
 // ------------------------------------------------------------ crossrefs ----

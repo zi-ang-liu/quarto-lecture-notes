@@ -134,6 +134,10 @@ typeless box whose screen-reader label is literally "None".
 | `important` | `#imp-` | 重要 | something easy to miss with real consequences |
 | `caution` | `#cau-` | 注意 | a step that is hard to undo |
 
+**Icons are off in every book**, set once as `callout-icon: false` in the
+extension, in HTML and PDF alike. Writing `icon=false` on a block is redundant —
+leave it out. Callout text is body-sized, not Quarto's default `.9rem`.
+
 **Every callout gets a title.** An untitled callout renders as a box labelled
 just ノート — it tells the student to stop, then doesn't say why. Give it a
 title as a leading heading, or with `title=`:

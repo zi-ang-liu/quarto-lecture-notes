@@ -31,6 +31,8 @@ $pre-bg:                #1a222b !default;
 $table-border-color:    $mist !default;
 $table-striped-bg:      rgba($indigo, .06) !default;
 
+$callout-border-width:  3px !default;
+
 /*-- scss:rules --*/
 
 main.content {
@@ -69,8 +71,25 @@ code:not(.sourceCode) {
   background: transparent;
 }
 
+// Dark mode loads this stylesheet instead of theme.scss, not on top of it, so
+// the callout sizing has to be repeated here. See the comment in theme.scss.
+.callout {
+  border-radius: $border-radius;
+}
+
+.callout.callout-style-default > div.callout-header,
+.callout.callout-style-simple > div.callout-header {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.callout.callout-style-default .callout-body,
+.callout.callout-style-simple .callout-body {
+  font-size: 1rem;
+}
+
 .theorem, .lemma, .corollary, .proposition, .definition, .example, .exercise {
-  border-left: 3px solid $indigo;
+  border-left: $callout-border-width solid $indigo;
   background: rgba($indigo, .09);
   padding: .85rem 1.1rem;
   margin: 1.4rem 0;

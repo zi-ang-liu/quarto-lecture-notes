@@ -72,6 +72,9 @@ Confirm with the author before pushing unless they have already asked for it.
 - **Callout and `#rem-`/`#alg-` cross-references render in English** in the
   Japanese books. A working `crossref: custom:` recipe is in CONVENTION.md §4,
   deliberately **not applied**: callouts are skippable, so they are rarely cited.
+- **Callouts carry no icon and use body-sized text.** `callout-icon: false` in
+  `_extension.yml` covers HTML and PDF; the `.9rem` override is in both SCSS
+  files. Don't reintroduce either.
 - **computer-literacy-book has no theorem-type environments on purpose.**
   Numbered 定義 X.Y reads as too formal for a first-year course.
 

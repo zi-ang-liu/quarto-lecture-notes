@@ -1,6 +1,6 @@
 title: Lecture Notes
 author: Ziang Liu
-version: 1.1.0
+version: 1.2.0
 quarto-required: ">=1.9.0"
 contributes:
   formats:
@@ -8,6 +8,11 @@ contributes:
       citations-hover: true
       crossref:
         chapters: true
+      # No icons on callouts, in any book, in either format. The colour and the
+      # title already say which kind it is, so the glyph is decoration. This is
+      # the document-level form of the per-block `icon=false` attribute, so it
+      # produces the identical `no-icon` markup — no CSS override involved.
+      callout-icon: false
 
     html:
       theme:
