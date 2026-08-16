@@ -55,6 +55,11 @@ h3 { margin-top: 2rem; }
 
 h1 + p, h2 + p, h3 + p { margin-top: .85rem; }
 
+// Repeated from theme.scss — dark mode loads this file instead of that one.
+code, pre, kbd, samp {
+  font-variant-ligatures: none;
+}
+
 pre.sourceCode {
   border: 1px solid $mist;
   border-radius: $border-radius;

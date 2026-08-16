@@ -72,6 +72,15 @@ h1 + p, h2 + p, h3 + p { margin-top: .85rem; }
 
 // ------------------------------------------------------------------- code ---
 
+// JetBrains Mono ships its programming ligatures in `calt`, which every browser
+// applies by default: `!=` draws as ≠, `<=` as ≤, `>=` as ≥, `==` as a single
+// long rule. These books teach the reader what to type, so a code glyph has to
+// be the character it stands for — most of all in a 演算子 table, where the
+// pair of characters is the subject of the row.
+code, pre, kbd, samp {
+  font-variant-ligatures: none;
+}
+
 pre.sourceCode {
   border: 1px solid $mist;
   border-radius: $border-radius;
