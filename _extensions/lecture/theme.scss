@@ -122,8 +122,13 @@ code:not(.sourceCode) {
   border-radius: 0 $border-radius $border-radius 0;
 }
 
+// The title stays run-in — the box already says which kind of block this is,
+// and 240 of the 245 example/exercise blocks carry no name, so a title on its
+// own line would be a near-empty one. It only needs room to breathe against a
+// body that often opens on math.
 .theorem-title {
   color: $indigo;
+  margin-inline-end: .35em;
 }
 
 // #exm- — a worked example the reader follows along with.
