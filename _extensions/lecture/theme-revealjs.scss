@@ -1,0 +1,318 @@
+/*-- scss:defaults --*/
+
+// Slides, not pages. Colours and families come from _brand.yml; this file owns
+// what the medium changes — type sized for a projector rather than for reading
+// at arm's length, a tighter vertical rhythm, and the chrome a page does not
+// have: the title rule, the running footer, the progress bar.
+
+// This file is listed ahead of `brand` in the format's theme list, and Quarto
+// compiles a later entry's defaults first. Two things follow. The brand's Sass
+// variables already exist here, so the palette is aliased, not copied — no
+// colour lives in this file. And anything the brand also sets must be assigned
+// outright, not with !default, or the brand's reading-size value keeps it.
+$ink:      $brand-ink !default;
+$slate:    $brand-slate !default;
+$mist:     $brand-mist !default;
+$paper:    $brand-paper !default;
+$indigo:   $brand-indigo !default;
+$teal:     $brand-teal !default;
+$amber:    $brand-amber !default;
+$crimson:  $brand-crimson !default;
+
+// The canvas is 1280x720 (see _extension.yml). 36px is 5% of the height — a
+// line of Japanese body text reads from the back of a lecture room, and a
+// four-line derivation still fits under a title. _brand.yml's 17px and 1.75
+// are reading values and would leave the frame two-thirds empty; both are
+// assigned outright, see above.
+$presentation-font-size-root:         36px;
+$presentation-line-height:            1.5;
+// `.smaller`. reveal's .7 takes Japanese below what a projector resolves.
+$presentation-font-smaller:           .8 !default;
+
+$presentation-h1-font-size:           1.8em !default;
+$presentation-h2-font-size:           1.15em !default;
+$presentation-h3-font-size:           1em !default;
+$presentation-h4-font-size:           1em !default;
+$presentation-title-slide-text-align: left !default;
+
+$presentation-list-bullet-color:      $indigo !default;
+$text-muted:                          $slate !default;
+$border-radius:                       .25em !default;
+$selection-bg:                        rgba($indigo, .25) !default;
+
+// Code. The block sits on a 3% indigo tint of paper — the book's $pre-bg,
+// derived instead of restated.
+$code-block-bg:                       mix($indigo, $paper, 3%) !default;
+$code-block-border-color:             $mist !default;
+$code-block-font-size:                .55em !default;
+$code-block-height:                   430px !default;
+$code-inline-font-size:               .875em !default;
+$code-color:                          $crimson !default;
+$code-bg:                             rgba($indigo, .06) !default;
+
+$table-border-color:                  $mist !default;
+
+// Quarto's slide callouts default to Bootstrap's palette, not the brand's.
+// Map each kind onto the brand the way the book's HTML already does.
+$callout-color-note:                  $indigo !default;
+$callout-color-tip:                   $teal !default;
+$callout-color-warning:               $amber !default;
+$callout-color-caution:               $amber !default;
+$callout-color-important:             $crimson !default;
+$callout-border-width:                .15em !default;
+$callout-margin-top:                  .6em !default;
+$callout-margin-bottom:               .6em !default;
+
+// Text on the indigo title and section slides.
+$dark-bg-text-color:                  $paper !default;
+$dark-bg-link-color:                  $mist !default;
+$dark-bg-code-color:                  $mist !default;
+
+/*-- scss:rules --*/
+
+// ---------------------------------------------------------------- frame ----
+// Content slides read from the top left. The title slide and the section
+// breaks are centred by reveal (they carry `center`) and painted indigo by
+// lecture-revealjs.lua.
+
+.reveal .slides section,
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  text-align: left;
+}
+
+// The slide title takes a rule on its left in the brand primary — the same
+// mark the theorem and example blocks carry, so title and blocks share one
+// visual language.
+.reveal section.level2 > h2 {
+  border-left: .22em solid $indigo;
+  padding-left: .45em;
+  line-height: 1.25;
+  margin-bottom: .6em;
+}
+
+// Title slide. Left-set like a cover, with a short bar above the title in
+// the text colour, so it stays right whichever background it sits on.
+.reveal #title-slide {
+  .title {
+    font-size: 1.8em;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: .25em;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 1.4em;
+      height: .11em;
+      background: currentColor;
+      margin-bottom: .55em;
+    }
+  }
+
+  .subtitle {
+    font-size: .95em;
+    opacity: .85;
+    margin-bottom: 1.5em;
+  }
+
+  .quarto-title-authors {
+    font-size: .75em;
+  }
+
+  .quarto-title-author-name {
+    font-weight: 500;
+  }
+
+  .quarto-title-affiliation,
+  .institute,
+  .date {
+    font-size: .85em;
+    opacity: .8;
+    margin: 0;
+  }
+}
+
+// Section break: one level-1 heading on indigo, with the same bar.
+.reveal .title-slide.level1 h1 {
+  &::before {
+    content: "";
+    display: block;
+    width: 1.4em;
+    height: .11em;
+    background: currentColor;
+    margin-bottom: .5em;
+  }
+}
+
+// ---------------------------------------------------------------- chrome ---
+// Footer and slide number are fixed to the viewport, not scaled with the
+// slide, so they are set in px like Quarto's own. The footer sits left, clear
+// of the menu button; the number sits right on the same baseline.
+
+.reveal .footer {
+  left: 50px;
+  right: auto;
+  width: auto;
+  bottom: 14px;
+  text-align: left;
+  font-size: 16px;
+  color: $slate;
+}
+
+.reveal .slide-number {
+  bottom: 14px;
+  right: 22px;
+  font-size: 16px;
+  color: $slate;
+}
+
+.reveal .progress {
+  height: 4px;
+  color: $indigo;
+}
+
+// ----------------------------------------------------------------- text ----
+
+.reveal {
+  ul, ol {
+    margin-bottom: .4em;
+  }
+
+  li {
+    margin-bottom: .3em;
+  }
+
+  li > ul, li > ol {
+    margin-top: .25em;
+  }
+
+  // Definition lists carry the term in the brand primary — a bold-run-in
+  // that reads as a label, not a heading.
+  dl {
+    margin: 0 0 .6em;
+  }
+
+  dt {
+    font-weight: 600;
+    color: $indigo;
+  }
+
+  dd {
+    margin: .1em 0 .6em;
+  }
+}
+
+// ------------------------------------------------------------------- code ---
+
+.reveal {
+  // Same reason as the book: JetBrains Mono ships its ligatures in `calt`, so
+  // `!=` draws as ≠ and `<=` as ≤. A slide teaching what to type has to show
+  // the characters that get typed.
+  code, pre, kbd, samp {
+    font-variant-ligatures: none;
+  }
+
+  pre {
+    margin: .6em 0;
+  }
+
+  pre code {
+    padding: .6em .8em;
+  }
+
+  // Executed output sits under its cell; mark it as output rather than source
+  // with the same left rule the book uses.
+  .cell-output pre {
+    border: none;
+    border-left: 3px solid $mist;
+    background: transparent;
+  }
+}
+
+// ------------------------------------------------------------ crossrefs ----
+// Carried over from theme.scss so a worked example looks the same on the slide
+// as in the chapter it was lifted from. Spacing is in em so it tracks the
+// presentation root instead of the book's 17px.
+
+.reveal {
+  .theorem, .lemma, .corollary, .proposition,
+  .definition, .example, .exercise {
+    border-left: .18em solid $indigo;
+    background: rgba($indigo, .035);
+    padding: .5em .75em;
+    margin: .6em 0;
+    border-radius: 0 .25em .25em 0;
+  }
+
+  .theorem-title {
+    color: $indigo;
+    margin-inline-end: .35em;
+  }
+
+  // #exm- — a worked example.
+  .example {
+    border-left-color: $teal;
+    background: rgba($teal, .04);
+
+    .theorem-title { color: $teal; }
+  }
+
+  // #exr- — an exercise, deliberately a different accent from .example.
+  .exercise {
+    border-left-color: $amber;
+    background: rgba($amber, .05);
+
+    .theorem-title { color: $amber; }
+  }
+}
+
+// ------------------------------------------------------------- callouts ----
+
+.reveal div.callout {
+  border-radius: .25em;
+  font-size: .9em;
+
+  .callout-title {
+    font-weight: 600;
+  }
+}
+
+// ----------------------------------------------------------- pseudocode ----
+// pseudocode.js sizes itself from the root, which on a slide leaves an
+// algorithm wider and taller than the frame. Scale the block, not the page.
+
+.reveal .ps-root {
+  font-size: .62em;
+}
+
+// ------------------------------------------------ tables, math, figures ----
+
+.reveal table {
+  font-size: .8em;
+  margin: .4em 0;
+
+  thead th {
+    border-bottom: 2px solid $slate;
+    font-weight: 600;
+  }
+
+  th, td {
+    padding: .25em .7em;
+    border-bottom: 1px solid $mist;
+  }
+}
+
+.reveal .katex-display {
+  margin: .5em 0;
+}
+
+.reveal .slide figure {
+  margin: .3em auto;
+
+  > figcaption {
+    font-size: .55em;
+    color: $slate;
+    text-align: center;
+    margin-top: .3em;
+  }
+}

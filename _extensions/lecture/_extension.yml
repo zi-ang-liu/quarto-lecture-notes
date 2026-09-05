@@ -1,6 +1,6 @@
 title: Lecture Notes
 author: Ziang Liu
-version: 1.2.2
+version: 1.3.0
 quarto-required: ">=1.9.0"
 contributes:
   formats:
@@ -63,3 +63,44 @@ contributes:
       use-rsvg-convert: true
       include-in-preamble:
         file: preamble.tex
+
+    revealjs:
+      # The stylesheet goes ahead of `brand` on purpose: Quarto compiles the
+      # later entry's defaults first, which lets the stylesheet alias the
+      # brand's palette instead of restating it. See the top of that file.
+      theme:
+        - theme-revealjs.scss
+        - brand
+      # Paints the title and section-break slides; see the file for how the
+      # colour reaches it without leaving _brand.yml.
+      filters:
+        - lecture-revealjs.lua
+      # Fills the running footer from the subtitle when a deck sets none.
+      include-after-body:
+        file: footer.html
+      # 16:9. Lecture-room projectors and laptop screens are; reveal's 3:2
+      # default would letterbox on both.
+      width: 1280
+      height: 720
+      # `#` opens a section-break slide, `##` starts a content slide. That is
+      # the same split the books already use for chapter and section, so a deck
+      # can lift a chapter's headings unchanged.
+      slide-level: 2
+      slide-number: c/t
+      # Quarto asks the CDN for `katex@latest`; a deck must not change under a
+      # lecturer because KaTeX shipped a new major overnight. The range still
+      # picks up patch releases. (It is still a CDN — see the offline note in
+      # the hub's CLAUDE.md before relying on a deck in a room without wifi.)
+      html-math-method:
+        method: katex
+        url: https://cdn.jsdelivr.net/npm/katex@0.16/dist/
+      code-line-numbers: true
+      code-overflow: wrap
+      code-copy: false
+      center: false
+      fig-align: center
+      # A deck is cited from the chapter it came from; the book owns the
+      # numbering. Without this, the chapter-scoped counter inherited from
+      # `common` prints 例 0.1 on a standalone deck.
+      crossref:
+        chapters: false

@@ -8,10 +8,13 @@ design, the shared build, and the writing conventions. Nothing here is a book.
 ```
 quarto-lecture-notes                    ← you are here
 ├── _extensions/lecture/
-│   ├── _extension.yml   lecture-html + lecture-pdf formats
+│   ├── _extension.yml   lecture-html + lecture-pdf + lecture-revealjs formats
 │   ├── _brand.yml       colours, fonts, root size  ← edit here to restyle all 5
 │   ├── theme.scss       layout, callouts, theorem blocks (light)
 │   ├── theme-dark.scss  the same, dark
+│   ├── theme-revealjs.scss   slides: projector sizing, title rule, footer
+│   ├── lecture-revealjs.lua  slides: paints the title and section slides
+│   ├── footer.html      slides: running footer filled from the subtitle
 │   ├── _book.yml        shared book: keys (author, footer, search, sidebar)
 │   └── preamble.tex     algorithm/algpseudocode for PDF
 ├── CONVENTION.md        ← the writing standard. Read before editing any .qmd
@@ -64,6 +67,10 @@ Confirm with the author before pushing unless they have already asked for it.
 - The reusable workflow needs `permissions: contents: write` **on the calling
   job** in each book. A reusable workflow cannot request more than its caller
   holds, and the run is rejected before any step executes.
+- Slides (`lecture-revealjs`) load KaTeX from jsdelivr. **No wifi, no math.**
+  `embed-resources: true` does not help — it yields a 32 MB file that still
+  fetches KaTeX. The fix is to ship KaTeX inside this extension (~600 KB with
+  woff2 fonts only) and point `html-math-method.url` at it; not done yet.
 - `rebuild-all.yml` needs the `BOOKS_DISPATCH_TOKEN` secret (fine-grained PAT,
   the five book repos, Contents: read and write).
 

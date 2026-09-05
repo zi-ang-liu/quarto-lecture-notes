@@ -1,0 +1,16 @@
+<script>
+// Every content slide carries the deck's subtitle as a running footer — the
+// course and the session, so a slide photographed on a phone still says where
+// it came from. A deck that sets `footer:` itself keeps its own text; this
+// only fills the default footer Quarto leaves empty.
+(function () {
+  var footer = document.querySelector(".reveal > .footer-default");
+  if (!footer || footer.textContent.trim()) return;
+  var source = document.querySelector("#title-slide .subtitle") ||
+               document.querySelector("#title-slide .title");
+  if (!source) return;
+  var p = document.createElement("p");
+  p.textContent = source.textContent.trim();
+  footer.appendChild(p);
+})();
+</script>
