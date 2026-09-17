@@ -81,6 +81,12 @@ Confirm with the author before pushing unless they have already asked for it.
   deliberately **not applied**: callouts are skippable, so they are rarely cited.
 - **Callouts carry no icon and use body-sized text.** `callout-icon: false` in
   `_extension.yml` covers HTML and PDF; the `.9rem` override is in both SCSS
+- conda's `defaults` channel now refuses to solve until Anaconda's ToS is
+  accepted. Build envs with `--override-channels -c conda-forge` instead.
+- scipy 1.15.x PyPI wheels do not load on macOS 27 (dyld rejects their
+  `__thread_bss` section; seen with the 3.10 and 3.12 wheels). The books pin
+  1.16.3 for that reason; conda-forge never built 1.15.3 for osx-arm64 either.
+  scipy >= 1.16 needs Python >= 3.11, so the books cannot go back to 3.10.
   files. Don't reintroduce either.
 - **computer-literacy-book has no theorem-type environments on purpose.**
   Numbered 定義 X.Y reads as too formal for a first-year course.
@@ -88,9 +94,17 @@ Confirm with the author before pushing unless they have already asked for it.
 ## Environment
 
 - Renders that execute code need `QUARTO_PYTHON=/opt/miniconda3/envs/quarto-book/bin/python`.
-  The system `python3` has no jupyter. That env is Python **3.10**, which is
+  The system `python3` has no jupyter. That env is Python **3.12**, which is
   what each book's `publish.yml` requests and what `requirements.txt` pins
-  against — keep the three in step.
+  against — keep the three in step. To rebuild it:
+
+  ```bash
+  conda create -n quarto-book --override-channels -c conda-forge python=3.12 pip
+  /opt/miniconda3/envs/quarto-book/bin/pip install \
+      -r ~/Github/or-book/requirements.txt \
+      -r ~/Github/rl-book/requirements.txt \
+      -r ~/Github/data-science-book/requirements.txt
+  ```
 - `gh` is installed and authenticated as `zi-ang-liu`, so a push is verifiable
   from here. Don't guess whether a build passed:
 

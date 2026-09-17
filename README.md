@@ -119,8 +119,9 @@ jobs:
       update-extensions: ${{ github.event_name == 'repository_dispatch' }}
 ```
 
-Books with executed Python chunks and no committed `_freeze` also need
-`python-version: "3.12"` and a `requirements.txt`.
+Books with executed Python chunks also need `python-version: "3.12"` and a
+`requirements.txt`: `_freeze/` is committed, but CI re-executes any chapter
+whose source changed since its freeze.
 
 `rebuild-all.yml` here fires a `theme-updated` dispatch at all five books whenever
 `_extensions/**` changes on `main`. It needs a repository secret
