@@ -4,7 +4,9 @@ name: Rebuild all books
 # redeploys all of them without touching each repo by hand.
 #
 # Requires a repository secret BOOKS_DISPATCH_TOKEN: a fine-grained PAT scoped
-# to the five book repos with "Contents: read and write" permission.
+# to every repo in the matrix below with "Contents: read and write"
+# permission. Adding a repo here means adding it to the PAT as well, or its
+# dispatch fails with 404.
 
 on:
   push:
@@ -25,6 +27,10 @@ jobs:
           - data-science-book
           - computer-literacy-book
           - database-book
+          # Not a course book, but it has a publish workflow, so a design
+          # change should redeploy it too. math-note is left out on purpose:
+          # it has no workflow to dispatch to.
+          - jb-open-campus
     steps:
       - name: Trigger ${{ matrix.repo }}
         run: |

@@ -11,8 +11,12 @@ import pathlib
 import re
 import sys
 
+# math-note (a private notebook) and jb-open-campus (the open-campus mock
+# lectures) are not course books, but they follow the same conventions and
+# are linted with the rest.
 BOOKS = ["or-book", "rl-book", "data-science-book",
-         "computer-literacy-book", "database-book"]
+         "computer-literacy-book", "database-book", "math-note",
+         "jb-open-campus"]
 
 VALID_CALLOUTS = {"note", "tip", "warning", "important", "caution"}
 THEOREM_PREFIXES = {"thm", "lem", "cor", "prp", "cnj", "def",
@@ -42,12 +46,16 @@ def prose_lines(text: str):
     """(lineno, line) for prose only — the parts §5 actually governs.
 
     Dropped: fenced code and inline code spans, because the linter cannot tell
-    a string a program really prints from prose the author typed; and 「…」/『…』
+    a string a program really prints from prose the author typed; 「…」/『…』
     runs, which are quotations, UI labels, or the punctuation marks themselves
-    under discussion (see computer-literacy-book's IME chapter).
+    under discussion (see computer-literacy-book's IME chapter); and `>`
+    blockquotes, which are verbatim quotations and keep their source's
+    punctuation (jb-open-campus quotes the department website).
     """
     fence = None
     for n, line in enumerate(text.splitlines(), 1):
+        if line.lstrip().startswith(">"):
+            continue
         m = re.match(r"\s*(`{3,}|~{3,})", line)
         if m:
             mark = m.group(1)[0] * 3

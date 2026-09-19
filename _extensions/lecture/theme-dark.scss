@@ -144,6 +144,12 @@ figcaption {
   color: $slate;
 }
 
+// Repeated from theme.scss — dark mode loads this file instead of that one.
+.cell-output-display img {
+  max-width: 100%;
+  height: auto;
+}
+
 .nav-footer {
   font-size: .85rem;
   color: $slate;

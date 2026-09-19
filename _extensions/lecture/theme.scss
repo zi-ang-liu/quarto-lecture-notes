@@ -214,3 +214,12 @@ figcaption {
   font-size: .875rem;
   color: $slate;
 }
+
+// A figure produced by a code cell is a plain <img> with its pixel size
+// written in. Unlike a Markdown image it gets no `img-fluid`, so a plot wider
+// than the column (rl-book's 10-inch ones, any phone) pushes a horizontal
+// scrollbar under the figure instead of shrinking. Let it shrink.
+.cell-output-display img {
+  max-width: 100%;
+  height: auto;
+}

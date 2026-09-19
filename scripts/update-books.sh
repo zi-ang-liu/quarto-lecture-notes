@@ -11,7 +11,7 @@ set -euo pipefail
 
 BOOKS_DIR="${BOOKS_DIR:-$HOME/Github}"
 EXTENSION="zi-ang-liu/quarto-lecture-notes"
-BOOKS=(or-book rl-book data-science-book computer-literacy-book database-book)
+BOOKS=(or-book rl-book data-science-book computer-literacy-book database-book math-note jb-open-campus)
 
 commit=false
 [[ "${1:-}" == "--commit" ]] && commit=true

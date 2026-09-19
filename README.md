@@ -5,7 +5,11 @@ Shared design and build configuration for my Quarto lecture-note books:
 [rl-book](https://github.com/zi-ang-liu/rl-book),
 [data-science-book](https://github.com/zi-ang-liu/data-science-book),
 [computer-literacy-book](https://github.com/zi-ang-liu/computer-literacy-book) and
-[database-book](https://github.com/zi-ang-liu/database-book).
+[database-book](https://github.com/zi-ang-liu/database-book) — and for two
+repos that are not course books but use the same design and conventions:
+`math-note`, a private notebook that publishes nothing, and
+[jb-open-campus](https://github.com/zi-ang-liu/jb-open-campus), the mock
+lectures for high-school students at the department's open campus.
 
 Each book keeps its own repo. Everything the books had in common — theme, colours,
 fonts, PDF settings, author block, footer, CI — lives here instead, so a design
@@ -27,13 +31,13 @@ checks the mechanical rules.
 | `_extensions/lecture/preamble.tex` | `algorithm` / `algpseudocode` setup for PDF |
 | `_extensions/lecture/_book.yml` | Shared `book:` keys (author, footer, search, sidebar) |
 | `.github/workflows/book.yml` | Reusable build-and-publish workflow |
-| `.github/workflows/rebuild-all.yml` | Redeploys all five books when the design changes |
+| `.github/workflows/rebuild-all.yml` | Redeploys every published repo when the design changes |
 
 The split between `_brand.yml` and `theme.scss` is deliberate: **colours and fonts
 only in the brand file, structure only in the SCSS.** The SCSS mirrors the palette
 names (`$indigo`, `$mist`, …) with `!default` so it still compiles if the brand file
-is ever missing, but the brand file always wins. To recolour all five books, edit
-`_brand.yml` and nothing else.
+is ever missing, but the brand file always wins. To recolour every book at once,
+edit `_brand.yml` and nothing else.
 
 ## Using it in a book repo
 
@@ -123,10 +127,11 @@ Books with executed Python chunks also need `python-version: "3.12"` and a
 `requirements.txt`: `_freeze/` is committed, but CI re-executes any chapter
 whose source changed since its freeze.
 
-`rebuild-all.yml` here fires a `theme-updated` dispatch at all five books whenever
-`_extensions/**` changes on `main`. It needs a repository secret
-`BOOKS_DISPATCH_TOKEN` — a fine-grained PAT scoped to the five book repos with
-*Contents: read and write*.
+`rebuild-all.yml` here fires a `theme-updated` dispatch at every published repo
+(the five books and jb-open-campus) whenever `_extensions/**` changes on `main`.
+It needs a repository secret `BOOKS_DISPATCH_TOKEN` — a fine-grained PAT scoped
+to those repos with *Contents: read and write*. A repo added to the workflow's
+matrix has to be added to the PAT as well.
 
 Normal pushes render with the extension version committed in the book repo, so local
 and CI output agree. Only a `theme-updated` rebuild pulls the newest extension. To
@@ -140,5 +145,5 @@ bring the committed copies up to date:
 
 1. Edit `_brand.yml` / `theme.scss` here.
 2. Bump `version:` in `_extension.yml`, commit, push.
-3. `rebuild-all.yml` redeploys all five books.
+3. `rebuild-all.yml` redeploys every published repo.
 4. Run `./scripts/update-books.sh --commit` when convenient, and push each repo.

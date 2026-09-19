@@ -5,7 +5,11 @@ House rules for the five lecture-note books
 [rl-book](https://github.com/zi-ang-liu/rl-book),
 [data-science-book](https://github.com/zi-ang-liu/data-science-book),
 [computer-literacy-book](https://github.com/zi-ang-liu/computer-literacy-book),
-[database-book](https://github.com/zi-ang-liu/database-book)).
+[database-book](https://github.com/zi-ang-liu/database-book)), for the
+private `math-note` notebook, which follows them so that a note worth teaching
+can move into a book unchanged, and for the open-campus mock lectures in
+`jb-open-campus`, which follow them minus the theorem-type environments — too
+formal for high-school students.
 
 Everything here was checked against Quarto 1.9.38 with the `lecture` extension
 and `lang: ja`.
@@ -255,9 +259,10 @@ either style alone.
 `rl-book`, which is `lang: en`.
 
 The linter checks this, one warning per file, in books whose `_quarto.yml` says
-`lang: ja`. It reads prose only — fenced code, inline code spans and `「…」`
-quotations are skipped, so the two exceptions above never get flagged, and
-Japanese punctuation inside code is yours to keep consistent by eye.
+`lang: ja`. It reads prose only — fenced code, inline code spans, `「…」`
+quotations and `>` blockquotes are skipped, so the two exceptions above never
+get flagged, and Japanese punctuation inside code is yours to keep consistent
+by eye.
 
 ---
 
@@ -298,7 +303,7 @@ Change these in `_brand.yml`, never in a book.
 
 ## 8. Current usage
 
-Where the five books stand today, as a baseline to improve on:
+Where the five course books stand today, as a baseline to improve on:
 
 | | count |
 |---|---|
