@@ -97,10 +97,17 @@ Confirm with the author before pushing unless they have already asked for it.
   46rem column used to push a horizontal scrollbar under itself (rl-book's
   10-inch plots, every phone). `theme.scss` and `theme-dark.scss` now cap
   `.cell-output-display img` at `max-width: 100%` (extension 1.3.1).
+- `_brand.yml` has only a light palette, and Quarto compiles it into the
+  **dark** theme as well. Any colour it sets that `theme-dark.scss` does not
+  stays light-mode there: code output was near-black on the dark page and
+  links 2.6:1 until 1.3.2 pinned `$pre-color`, `$link-color`,
+  `$body-secondary` and `$body-secondary-color` in `theme-dark.scss`. A colour
+  added to the brand file (a `typography` colour, say) needs its dark value
+  there too.
 - Wikimedia rate-limits pandoc's image fetches (HTTP 429), so a **PDF** render
   of a chapter that hot-links Wikimedia images fails. HTML is unaffected — the
   browser fetches them — but ship local copies of CC-licensed images if the
-  PDF matters. jb-open-campus is the live case.
+  PDF matters. jb-open-campus hit this and is HTML-only for that reason.
 - conda's `defaults` channel now refuses to solve until Anaconda's ToS is
   accepted. Build envs with `--override-channels -c conda-forge` instead.
 - scipy 1.15.x PyPI wheels do not load on macOS 27 (dyld rejects their

@@ -16,6 +16,16 @@ $font-size-root:        17px !default;
 $body-color:            $ink !default;
 $body-bg:               $paper !default;
 
+// The brand layer is compiled into this theme too, and _brand.yml has only
+// the light palette, so any colour it sets that this file does not stays
+// light-mode. These four are the ones that reach text: unpinned, code output
+// was near-black on $paper and links were the light indigo. A value set here
+// wins over the brand's.
+$pre-color:             $ink !default;     // code output; plain ``` blocks
+$link-color:            $indigo !default;  // links, cross-refs, active TOC entry
+$body-secondary:        $slate !default;   // section numbers, captions, margin notes, blockquotes
+$body-secondary-color:  $slate !default;   // Bootstrap's muted text, e.g. table captions
+
 $border-radius:         .375rem !default;
 $border-radius-sm:      .25rem !default;
 
