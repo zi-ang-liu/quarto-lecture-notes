@@ -35,7 +35,9 @@ typography:
   base:
     family: Noto Sans JP
     weight: 400
-    size: 17px
+    # Body text. The rem is 17px (theme-common.scss), which headings and the
+    # sidebar are sized in, so this is not the root size.
+    size: 18px
     line-height: 1.75
   headings:
     family: Noto Sans JP

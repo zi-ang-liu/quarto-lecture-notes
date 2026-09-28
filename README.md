@@ -25,9 +25,10 @@ checks the mechanical rules.
 | File | Owns |
 |---|---|
 | `_extensions/lecture/_extension.yml` | The `lecture-html` and `lecture-pdf` formats |
-| `_extensions/lecture/_brand.yml` | Colours, fonts, root font size (light + dark) |
-| `_extensions/lecture/theme.scss` | Layout, spacing, callouts, theorem blocks — light |
-| `_extensions/lecture/theme-dark.scss` | The same, for the dark toggle |
+| `_extensions/lecture/_brand.yml` | Colours, fonts, body font size (light + dark) |
+| `_extensions/lecture/theme-common.scss` | Layout, spacing, callouts, theorem blocks — both modes |
+| `_extensions/lecture/theme.scss` | The light palette |
+| `_extensions/lecture/theme-dark.scss` | The dark palette, for the dark toggle |
 | `_extensions/lecture/preamble.tex` | `algorithm` / `algpseudocode` setup for PDF |
 | `_extensions/lecture/_book.yml` | Shared `book:` keys (author, footer, search, sidebar) |
 | `.github/workflows/book.yml` | Reusable build-and-publish workflow |
@@ -143,7 +144,7 @@ bring the committed copies up to date:
 
 ## Releasing a change
 
-1. Edit `_brand.yml` / `theme.scss` here.
+1. Edit `_brand.yml` / `theme-common.scss` here.
 2. Bump `version:` in `_extension.yml`, commit, push.
 3. `rebuild-all.yml` redeploys every published repo.
 4. Run `./scripts/update-books.sh --commit` when convenient, and push each repo.

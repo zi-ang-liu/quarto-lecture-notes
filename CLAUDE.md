@@ -10,9 +10,10 @@ shared build, and the writing conventions. Nothing here is a book.
 quarto-lecture-notes                    ← you are here
 ├── _extensions/lecture/
 │   ├── _extension.yml   lecture-html + lecture-pdf + lecture-revealjs formats
-│   ├── _brand.yml       colours, fonts, root size  ← edit here to restyle all 5
-│   ├── theme.scss       layout, callouts, theorem blocks (light)
-│   ├── theme-dark.scss  the same, dark
+│   ├── _brand.yml       colours, fonts, body size  ← edit here to restyle all 5
+│   ├── theme-common.scss     layout, callouts, theorem blocks — both modes
+│   ├── theme.scss       light palette
+│   ├── theme-dark.scss  dark palette
 │   ├── theme-revealjs.scss   slides: projector sizing, title rule, footer
 │   ├── lecture-revealjs.lua  slides: paints the title and section slides
 │   ├── footer.html      slides: running footer filled from the subtitle
@@ -61,8 +62,10 @@ python3 scripts/lint-conventions.py ~/Github
 
 ## Changing the design
 
-1. Edit `_brand.yml` (colours, fonts) or `theme.scss` (layout, spacing).
-   **Colours and fonts only in the brand file; structure only in the SCSS.**
+1. Edit `_brand.yml` (colours, fonts) or `theme-common.scss` (layout,
+   spacing). **Colours and fonts only in the brand file; structure only in
+   the SCSS.** theme-common.scss serves light and dark alike; `theme.scss`
+   and `theme-dark.scss` hold only what differs between the modes.
 2. Bump `version:` in `_extensions/lecture/_extension.yml`.
 3. Commit and push. `rebuild-all.yml` fires `theme-updated` at the five books
    and jb-open-campus; each pulls the new extension and redeploys — usually
@@ -95,8 +98,22 @@ Confirm with the author before pushing unless they have already asked for it.
 - A figure drawn by a code cell is a plain `<img>` with its pixel size written
   in — no `img-fluid`, unlike a Markdown image — so a plot wider than the
   46rem column used to push a horizontal scrollbar under itself (rl-book's
-  10-inch plots, every phone). `theme.scss` and `theme-dark.scss` now cap
+  10-inch plots, every phone). `theme-common.scss` caps
   `.cell-output-display img` at `max-width: 100%` (extension 1.3.1).
+- Display math did the same to the **whole page**: `.katex-display` is
+  `overflow: visible`, so on a 390px phone every chapter with a wide equation
+  was 450–760px wide and panned sideways. Since 1.4.0 the inner `.katex`
+  scrolls instead; the padding and negative margins around it are measured,
+  see the comment there before touching them. KaTeX's stylesheet loads after
+  the theme, so a same-specificity rule on `.katex-display` loses to it.
+- Bootstrap's RFS rewrites every px font size in rem assuming a **16px** rem,
+  while the theme's rem is 17px (`$font-size-root`). Until 1.4.0 that turned
+  the brand's body size into 17/16 of itself — 17px rendered as 18.06px, and
+  callouts at `1rem` came out smaller than the body. `$rfs-rem-value: 17` in
+  theme-common.scss must match the root; change both together.
+- Light and dark used to be two hand-kept copies of the whole theme, and they
+  drifted (dark had larger sidebar and TOC text, no figure margins, an h4
+  larger than h3). Anything structural goes in `theme-common.scss` only.
 - `_brand.yml` has only a light palette, and Quarto compiles it into the
   **dark** theme as well. Any colour it sets that `theme-dark.scss` does not
   stays light-mode there: code output was near-black on the dark page and
@@ -121,8 +138,9 @@ Confirm with the author before pushing unless they have already asked for it.
   Japanese books. A working `crossref: custom:` recipe is in CONVENTION.md §4,
   deliberately **not applied**: callouts are skippable, so they are rarely cited.
 - **Callouts carry no icon and use body-sized text.** `callout-icon: false` in
-  `_extension.yml` covers HTML and PDF; the `.9rem` override is in both SCSS
-  files. Don't reintroduce either.
+  `_extension.yml` covers HTML and PDF; the override of Quarto's `.9rem` is in
+  `theme-common.scss`, as `1em` so it follows the body. Don't reintroduce
+  either.
 - **computer-literacy-book has no theorem-type environments on purpose.**
   Numbered 定義 X.Y reads as too formal for a first-year course. The same
   holds for jb-open-campus, whose readers are high-school students.

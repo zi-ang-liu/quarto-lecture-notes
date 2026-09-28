@@ -21,7 +21,7 @@ $crimson:  $brand-crimson !default;
 
 // The canvas is 1280x720 (see _extension.yml). 36px is 5% of the height — a
 // line of Japanese body text reads from the back of a lecture room, and a
-// four-line derivation still fits under a title. _brand.yml's 17px and 1.75
+// four-line derivation still fits under a title. _brand.yml's 18px and 1.75
 // are reading values and would leave the frame two-thirds empty; both are
 // assigned outright, see above.
 $presentation-font-size-root:         36px;
@@ -230,9 +230,9 @@ $dark-bg-code-color:                  $mist !default;
 }
 
 // ------------------------------------------------------------ crossrefs ----
-// Carried over from theme.scss so a worked example looks the same on the slide
-// as in the chapter it was lifted from. Spacing is in em so it tracks the
-// presentation root instead of the book's 17px.
+// Carried over from theme-common.scss so a worked example looks the same on
+// the slide as in the chapter it was lifted from. Spacing is in em so it
+// tracks the presentation root instead of the book's 17px.
 
 .reveal {
   .theorem, .lemma, .corollary, .proposition,

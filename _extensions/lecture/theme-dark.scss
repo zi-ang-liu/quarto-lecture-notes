@@ -1,7 +1,8 @@
 /*-- scss:defaults --*/
 
-// Dark counterpart to theme.scss, layered on top of `cyborg`. Only the values
-// that have to invert are redefined; everything structural is inherited.
+// Dark palette, layered on `cyborg`: the same names as theme.scss, with the
+// values that have to invert. The rules are in theme-common.scss, shared with
+// light mode, so nothing structural belongs here.
 
 $ink:                   #dfe6ee !default;
 $slate:                 #9aa9b8 !default;
@@ -12,8 +13,6 @@ $teal:                  #4bbfae !default;
 $amber:                 #d9a441 !default;
 $crimson:               #e07a7a !default;
 
-$font-size-root:        17px !default;
-$body-color:            $ink !default;
 $body-bg:               $paper !default;
 
 // The brand layer is compiled into this theme too, and _brand.yml has only
@@ -26,141 +25,12 @@ $link-color:            $indigo !default;  // links, cross-refs, active TOC entr
 $body-secondary:        $slate !default;   // section numbers, captions, margin notes, blockquotes
 $body-secondary-color:  $slate !default;   // Bootstrap's muted text, e.g. table captions
 
-$border-radius:         .375rem !default;
-$border-radius-sm:      .25rem !default;
-
-$headings-font-weight:  600 !default;
-$h1-font-size:          1.9rem !default;
-$h2-font-size:          1.5rem !default;
-$h3-font-size:          1.22rem !default;
-
-$code-color:            $crimson !default;
 $code-bg:               rgba($indigo, .12) !default;
 $pre-bg:                #1a222b !default;
-
-$table-border-color:    $mist !default;
 $table-striped-bg:      rgba($indigo, .06) !default;
 
-$callout-border-width:  3px !default;
-
-/*-- scss:rules --*/
-
-main.content {
-  max-width: 46rem;
-}
-
-#quarto-document-content {
-  p, li {
-    line-height: 1.8;
-  }
-}
-
-h2 {
-  border-bottom: 1px solid $mist;
-  padding-bottom: .3rem;
-  margin-top: 2.75rem;
-}
-
-h3 { margin-top: 2rem; }
-
-h1 + p, h2 + p, h3 + p { margin-top: .85rem; }
-
-// Repeated from theme.scss — dark mode loads this file instead of that one.
-code, pre, kbd, samp {
-  font-variant-ligatures: none;
-}
-
-pre.sourceCode {
-  border: 1px solid $mist;
-  border-radius: $border-radius;
-  padding: .85rem 1rem;
-}
-
-code:not(.sourceCode) {
-  padding: .12em .35em;
-  border-radius: $border-radius-sm;
-}
-
-.cell-output pre {
-  border-left: 3px solid $mist;
-  background: transparent;
-}
-
-// Dark mode loads this stylesheet instead of theme.scss, not on top of it, so
-// the callout sizing has to be repeated here. See the comment in theme.scss.
-.callout {
-  border-radius: $border-radius;
-}
-
-.callout.callout-style-default > div.callout-header,
-.callout.callout-style-simple > div.callout-header {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.callout.callout-style-default .callout-body,
-.callout.callout-style-simple .callout-body {
-  font-size: 1rem;
-}
-
-.theorem, .lemma, .corollary, .proposition, .definition, .example, .exercise {
-  border-left: $callout-border-width solid $indigo;
-  background: rgba($indigo, .09);
-  padding: .85rem 1.1rem;
-  margin: 1.4rem 0;
-  border-radius: 0 $border-radius $border-radius 0;
-}
-
-.theorem-title {
-  color: $indigo;
-  margin-inline-end: .35em;
-}
-
-// #exm- — a worked example the reader follows along with.
-.example {
-  border-left-color: $teal;
-  background: rgba($teal, .09);
-
-  .theorem-title { color: $teal; }
-}
-
-// #exr- — an exercise the reader is asked to do. Deliberately a different
-// accent from .example so the two are told apart at a glance.
-.exercise {
-  border-left-color: $amber;
-  background: rgba($amber, .1);
-
-  .theorem-title { color: $amber; }
-}
-
-.table {
-  font-size: .95rem;
-
-  > thead {
-    border-bottom: 2px solid $slate;
-  }
-
-  th {
-    font-weight: 600;
-  }
-}
-
-.katex-display {
-  margin: 1.4em 0;
-}
-
-figcaption {
-  font-size: .875rem;
-  color: $slate;
-}
-
-// Repeated from theme.scss — dark mode loads this file instead of that one.
-.cell-output-display img {
-  max-width: 100%;
-  height: auto;
-}
-
-.nav-footer {
-  font-size: .85rem;
-  color: $slate;
-}
+// Background tint of the theorem-type blocks, as the alpha of their accent —
+// stronger than light mode's, or the boxes vanish on dark paper.
+$theorem-tint:          .09 !default;
+$example-tint:          .09 !default;
+$exercise-tint:         .1 !default;

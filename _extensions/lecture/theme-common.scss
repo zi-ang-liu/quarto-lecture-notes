@@ -1,0 +1,249 @@
+/*-- scss:defaults --*/
+
+// Layout, spacing and component styling for both colour modes. The format
+// lists this file in the light and the dark theme alike, just ahead of the
+// palette file — theme.scss or theme-dark.scss — which holds everything that
+// differs between the two modes. The rules here name the palette ($ink,
+// $indigo, …) and never a colour value.
+//
+// Quarto compiles a later theme layer's defaults first, so the palette file's
+// values are already set when this file reads them, and a palette file can
+// override any default here.
+//
+// This used to be two copies, one per mode, and they drifted: dark mode had
+// larger sidebar and TOC text, no figure margins, and an h4 larger than h3.
+
+// The rem is 17px. Bootstrap's RFS rewrites every px font size — _brand.yml's
+// body size among them — in rem, and assumes a 16px rem unless told otherwise:
+// without the second line the brand's size came out 17/16 larger than written.
+$font-size-root:        17px !default;
+$rfs-rem-value:         17 !default;
+$body-color:            $ink !default;
+
+$border-radius:         .375rem !default;
+$border-radius-sm:      .25rem !default;
+$border-radius-lg:      .5rem !default;
+
+// The body is _brand.yml's 18px, a little over 1rem, so an h4 needs more than
+// that to read as a heading above it.
+$headings-font-weight:  600 !default;
+$h1-font-size:          1.9rem !default;
+$h2-font-size:          1.5rem !default;
+$h3-font-size:          1.22rem !default;
+$h4-font-size:          1.1rem !default;
+
+$code-color:            $crimson !default;
+$table-border-color:    $mist !default;
+
+$toc-font-size:         .85rem !default;
+$sidebar-font-size:     .9rem !default;
+$sidebar-items-gap-spacing: .3em !default;
+
+$callout-border-width:  3px !default;
+
+/*-- scss:rules --*/
+
+// ---------------------------------------------------------------- reading ---
+// Lecture notes are read top to bottom, so keep the measure narrow enough to
+// scan and give headings room to act as section breaks.
+
+main.content {
+  max-width: 46rem;
+}
+
+#quarto-document-content {
+  p, li {
+    line-height: 1.8;
+  }
+}
+
+h2 {
+  border-bottom: 1px solid $mist;
+  padding-bottom: .3rem;
+  margin-top: 2.75rem;
+}
+
+h3 { margin-top: 2rem; }
+
+// Japanese text needs a touch more space between a heading and its body copy
+// than the Bootstrap default leaves.
+h1 + p, h2 + p, h3 + p { margin-top: .85rem; }
+
+// ------------------------------------------------------------------- code ---
+
+// JetBrains Mono ships its programming ligatures in `calt`, which every browser
+// applies by default: `!=` draws as ≠, `<=` as ≤, `>=` as ≥, `==` as a single
+// long rule. These books teach the reader what to type, so a code glyph has to
+// be the character it stands for — most of all in a 演算子 table, where the
+// pair of characters is the subject of the row.
+code, pre, kbd, samp {
+  font-variant-ligatures: none;
+}
+
+pre.sourceCode {
+  border: 1px solid $mist;
+  border-radius: $border-radius;
+  padding: .85rem 1rem;
+}
+
+code:not(.sourceCode) {
+  padding: .12em .35em;
+  border-radius: $border-radius-sm;
+}
+
+.cell-output pre {
+  border-left: 3px solid $mist;
+  background: transparent;
+}
+
+// ------------------------------------------------------------ callouts -----
+
+.callout {
+  border-radius: $border-radius;
+}
+
+// Quarto sizes callout text at .9rem, which reads as a footnote beside the
+// prose around it. In lecture notes a callout carries body copy — a caveat or
+// an aside the reader is meant to actually read — so match the body instead.
+// `em`, not `rem`: the body is _brand.yml's size, not the rem, so only an em
+// follows it. These selectors mirror Quarto's own, including the `div`: the
+// theme layer is compiled after Bootstrap, so equal specificity wins on source
+// order.
+.callout.callout-style-default > div.callout-header,
+.callout.callout-style-simple > div.callout-header {
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.callout.callout-style-default .callout-body,
+.callout.callout-style-simple .callout-body {
+  font-size: 1em;
+}
+
+// ------------------------------------------------------------ crossrefs ----
+// Theorem-like blocks show up in every one of these books; give them a
+// consistent look instead of leaving them as bare paragraphs. The tint
+// strengths are per mode: dark paper needs more to show at all.
+
+.theorem, .lemma, .corollary, .proposition, .definition, .example, .exercise {
+  border-left: $callout-border-width solid $indigo;
+  background: rgba($indigo, $theorem-tint);
+  padding: .85rem 1.1rem;
+  margin: 1.4rem 0;
+  border-radius: 0 $border-radius $border-radius 0;
+}
+
+// The title stays run-in — the box already says which kind of block this is,
+// and 240 of the 245 example/exercise blocks carry no name, so a title on its
+// own line would be a near-empty one. It only needs room to breathe against a
+// body that often opens on math.
+.theorem-title {
+  color: $indigo;
+  margin-inline-end: .35em;
+}
+
+// #exm- — a worked example the reader follows along with.
+.example {
+  border-left-color: $teal;
+  background: rgba($teal, $example-tint);
+
+  .theorem-title { color: $teal; }
+}
+
+// #exr- — an exercise the reader is asked to do. Deliberately a different
+// accent from .example so the two are told apart at a glance.
+.exercise {
+  border-left-color: $amber;
+  background: rgba($amber, $exercise-tint);
+
+  .theorem-title { color: $amber; }
+}
+
+.proof {
+  margin: 1.2rem 0;
+}
+
+// ---------------------------------------------------------------- tables ---
+
+.table {
+  font-size: .95rem;
+
+  > thead {
+    border-bottom: 2px solid $slate;
+  }
+
+  th {
+    font-weight: 600;
+  }
+}
+
+// ------------------------------------------------------------- navigation --
+
+.sidebar-item-text {
+  line-height: 1.45;
+}
+
+.sidebar nav[role="doc-toc"] > ul li a {
+  padding-top: .18rem;
+  padding-bottom: .18rem;
+}
+
+#quarto-margin-sidebar .quarto-alternate-formats {
+  margin-top: 1rem;
+}
+
+// -------------------------------------------------------------- footer -----
+
+.nav-footer {
+  font-size: .85rem;
+  color: $slate;
+}
+
+// ---------------------------------------------------------------- math -----
+// A wide display equation — a matrix, a long derivation line — has to scroll
+// inside the column: left visible, it widened the whole page, and on a phone
+// every page with math panned sideways.
+//
+// The scroller is the inner .katex. Once overflow-x scrolls, overflow-y has to
+// clip, and the ink reaches past the box — up to 2px above, 7px below — so
+// the scroller gets padding there, each side taken back by an equal negative
+// margin that collapses into .katex-display's. The space around an equation
+// stays KaTeX's own 1em: katex.min.css loads after the theme, so a plain
+// `.katex-display` margin here loses to it on source order.
+//
+// The padding is lopsided on purpose. Between two consecutive equations only
+// one negative margin survives the collapse while both paddings count, so
+// every px of top padding widens that gap: .5em at the top added 11px there.
+// 3px keeps every glyph whole (checked pixel by pixel on 150 equations).
+//
+// The 2px at the sides is for KaTeX's vlist spacer, which overhangs its box
+// by 2px. At the right edge — an align environment's equation numbers — it
+// made the equation scroll by 2px at any width, which is a visible scrollbar
+// wherever scrollbars are not overlays.
+
+.katex-display > .katex {
+  padding: 3px 2px .5em;
+  margin: -3px 0 -.5em;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+// --------------------------------------------------------------- figures ---
+
+figure {
+  margin: 1.8rem auto;
+}
+
+figcaption {
+  font-size: .875rem;
+  color: $slate;
+}
+
+// A figure produced by a code cell is a plain <img> with its pixel size
+// written in. Unlike a Markdown image it gets no `img-fluid`, so a plot wider
+// than the column (rl-book's 10-inch ones, any phone) pushes a horizontal
+// scrollbar under the figure instead of shrinking. Let it shrink.
+.cell-output-display img {
+  max-width: 100%;
+  height: auto;
+}
