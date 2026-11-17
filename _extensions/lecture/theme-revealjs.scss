@@ -200,6 +200,15 @@ $dark-bg-code-color:                  $mist !default;
   dd {
     margin: .1em 0 .6em;
   }
+
+  // Japanese carries no spaces, so a line used to break wherever it ran out
+  // and leave 「よ．」 or 「る．」 alone on the last one. `auto-phrase` breaks
+  // between phrases (文節) instead, and `pretty` keeps the last line from
+  // being a stub. Chromium only for now; elsewhere the text wraps as before.
+  p, li, dd {
+    word-break: auto-phrase;
+    text-wrap: pretty;
+  }
 }
 
 // ------------------------------------------------------------------- code ---
@@ -315,4 +324,19 @@ $dark-bg-code-color:                  $mist !default;
     text-align: center;
     margin-top: .3em;
   }
+}
+
+// A figure drawn by a code cell is a plain <img> with its pixel size written
+// in, and Quarto's auto-stretch does not reach one that carries a `fig-`
+// label. Left alone it sat at 800px of the 1280px frame, its tick labels a
+// third the size of the body text. Give it the frame's width instead, so a
+// deck's `fig-width` sets how large the text in the drawing reads, not how
+// large the drawing is: at 6in, matplotlib's 10pt lands near 24px. The height
+// cap is what a one-line title, a caption and the footer leave of the 720px
+// frame; `object-fit` keeps the proportions if a taller drawing meets it.
+.reveal .slide .cell-output-display img {
+  width: 88%;
+  height: auto;
+  max-height: 480px;
+  object-fit: contain;
 }
