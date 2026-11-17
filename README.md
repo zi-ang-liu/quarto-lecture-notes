@@ -128,6 +128,12 @@ Books with executed Python chunks also need `python-version: "3.12"` and a
 `requirements.txt`: `_freeze/` is committed, but CI re-executes any chapter
 whose source changed since its freeze.
 
+A book can also keep its lecture slides in `slides/`, a Quarto project of its
+own (`slides/_quarto.yml` with `output-dir: _slides`). When that file exists,
+the workflow renders the project after the book and publishes it under
+`<site-url>/slides/`; a `slides/index.qmd` becomes the landing page there.
+The decks render from their committed `slides/_freeze/`, as chapters do.
+
 `rebuild-all.yml` here fires a `theme-updated` dispatch at every published repo
 (the five books and jb-open-campus) whenever `_extensions/**` changes on `main`.
 It needs a repository secret `BOOKS_DISPATCH_TOKEN` — a fine-grained PAT scoped

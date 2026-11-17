@@ -61,6 +61,20 @@ jobs:
       - name: Render
         run: quarto render --to ${{ inputs.to }}
 
+      # A book may keep its lecture decks in slides/, a Quarto project of its
+      # own (output-dir: _slides). Copied into _book/slides/, they go out with
+      # the book: the publish step below uploads all of _book/. This has to be
+      # a project render — Quarto reads _freeze/ only then; a single-file
+      # render always executes. If it fails, nothing is published and the live
+      # site keeps its previous version.
+      - name: Render slides
+        if: hashFiles('slides/_quarto.yml') != ''
+        working-directory: slides
+        run: |
+          quarto render
+          mkdir -p ../_book/slides
+          cp -R _slides/. ../_book/slides/
+
       - uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages

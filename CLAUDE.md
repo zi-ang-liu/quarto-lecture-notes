@@ -25,7 +25,8 @@ quarto-lecture-notes                    ← you are here
 │   └── update-books.sh       quarto update across local clones
 ├── templates/gitignore  the identical .gitignore all seven repos use
 └── .github/workflows/
-    ├── book.yml         reusable build+publish, called by each book
+    ├── book.yml         reusable build+publish, called by each book;
+    │                    also publishes a book's slides/ under <site>/slides/
     └── rebuild-all.yml  dispatches theme-updated to the six published repos
                          on _extensions/** change
 ```
