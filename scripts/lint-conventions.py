@@ -22,6 +22,10 @@ VALID_CALLOUTS = {"note", "tip", "warning", "important", "caution"}
 THEOREM_PREFIXES = {"thm", "lem", "cor", "prp", "cnj", "def",
                     "exm", "exr", "alg", "sol", "rem"}
 CALLOUT_PREFIXES = {"nte", "tip", "wrn", "imp", "cau"}
+# Float divs: a figure or table built from several panels, e.g.
+# `::: {#fig-penguins layout-ncol=3}` around three images with their own
+# `{#fig-…}` ids. Valid Quarto, and @fig-/@tbl- refs to them resolve.
+FLOAT_PREFIXES = {"fig", "tbl", "lst"}
 
 
 def chapters(book: pathlib.Path):
@@ -90,7 +94,7 @@ def check(path: pathlib.Path, rel: str, ja: bool = False):
             if c not in VALID_CALLOUTS:
                 out.append((n, "ERROR", f"'{c}' is not a Quarto callout type"))
         for key in re.findall(r"#(\w+)-", attrs):
-            if key not in THEOREM_PREFIXES | CALLOUT_PREFIXES:
+            if key not in THEOREM_PREFIXES | CALLOUT_PREFIXES | FLOAT_PREFIXES:
                 out.append((n, "WARN", f"unknown crossref prefix '#{key}-'"))
 
     # Untitled callouts, and referenceable ones missing the required title.
