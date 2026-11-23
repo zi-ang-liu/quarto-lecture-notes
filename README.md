@@ -8,7 +8,7 @@ Shared design and build configuration for my Quarto lecture-note books:
 [database-book](https://github.com/zi-ang-liu/database-book) — and for two
 repos that are not course books but use the same design and conventions:
 `math-note`, a private notebook that publishes nothing, and
-[jb-open-campus](https://github.com/zi-ang-liu/jb-open-campus), the mock
+[open-campus](https://github.com/zi-ang-liu/open-campus), the mock
 lectures for high-school students at the department's open campus.
 
 Each book keeps its own repo. Everything the books had in common — theme, colours,
@@ -135,7 +135,7 @@ the workflow renders the project after the book and publishes it under
 The decks render from their committed `slides/_freeze/`, as chapters do.
 
 `rebuild-all.yml` here fires a `theme-updated` dispatch at every published repo
-(the five books and jb-open-campus) whenever `_extensions/**` changes on `main`.
+(the five books and open-campus) whenever `_extensions/**` changes on `main`.
 It needs a repository secret `BOOKS_DISPATCH_TOKEN` — a fine-grained PAT scoped
 to those repos with *Contents: read and write*. A repo added to the workflow's
 matrix has to be added to the PAT as well.

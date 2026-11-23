@@ -51,7 +51,11 @@ Same extension, same conventions, published like a book — so it **is** in
 `rebuild-all.yml` — but by design it has **no theorem-type environments**
 (titled callouts instead; numbered 例 X.Y is too formal for that audience) and
 hides all code (`echo: false`). The `jb-` prefix is a leftover from the
-Jupyter Book version it replaced in September 2026. See its own `CLAUDE.md`.
+Jupyter Book version it replaced in September 2026. On GitHub the repo has
+since been renamed **`open-campus`** (site `zi-ang-liu.github.io/open-campus/`;
+the old `/jb-open-campus/` URL is 404). The local clone keeps the old name, so
+the linter and `update-books.sh` say `jb-open-campus` while `rebuild-all.yml`
+says `open-campus`. See its own `CLAUDE.md`.
 
 ## Start here
 
@@ -69,7 +73,7 @@ python3 scripts/lint-conventions.py ~/Github
    and `theme-dark.scss` hold only what differs between the modes.
 2. Bump `version:` in `_extensions/lecture/_extension.yml`.
 3. Commit and push. `rebuild-all.yml` fires `theme-updated` at the five books
-   and jb-open-campus; each pulls the new extension and redeploys — usually
+   and open-campus; each pulls the new extension and redeploys — usually
    under two minutes.
 4. `./scripts/update-books.sh --commit` brings each book's committed
    `_extensions/` up to date, then push each book.
@@ -95,7 +99,12 @@ Confirm with the author before pushing unless they have already asked for it.
   woff2 fonts only) and point `html-math-method.url` at it; not done yet.
 - `rebuild-all.yml` needs the `BOOKS_DISPATCH_TOKEN` secret (fine-grained PAT,
   every repo in its matrix, Contents: read and write). A repo added to the
-  matrix but not to the PAT fails its dispatch with 404.
+  matrix but not to the PAT fails its dispatch with 404 (403 if public). An
+  expired PAT fails every repo with 401: regenerating it changes the value,
+  so reset the secret (`gh secret set BOOKS_DISPATCH_TOKEN`), then `gh run
+  rerun <id> --failed`. A renamed repo answers 301, which the job now treats
+  as a failure; before it only checked `curl --fail`, which passed it while
+  nothing deployed.
 - A figure drawn by a code cell is a plain `<img>` with its pixel size written
   in — no `img-fluid`, unlike a Markdown image — so a plot wider than the
   46rem column used to push a horizontal scrollbar under itself (rl-book's
