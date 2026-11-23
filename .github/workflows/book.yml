@@ -9,7 +9,7 @@ on:
       quarto-version:
         description: Quarto version to build with.
         type: string
-        default: "1.9.38"
+        default: "1.11.9"
       to:
         description: Format to render. Defaults to HTML only; PDF needs a TeX toolchain.
         type: string
