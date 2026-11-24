@@ -1,12 +1,22 @@
-## Figure style for every lecture book — the one place figure colours live.
+## Figure style for every lecture book — the one place a figure's look lives.
 ##
 ## Every chapter that Quarto executes loads this file (see sitecustomize.py
-## beside it), so a chapter's code names colours by their slot — "C0" to "C4"
-## — and never by value. Changing a colour here changes it in every figure of
-## every book, the next time the chapters are executed.
+## beside it), so a chapter's code says what to draw and this file says how
+## it looks: colours by slot — "C0" to "C4" — never by value, and no line
+## width, font size or frame styling unless that figure needs to differ.
+## Changing a value here changes it in every figure of every book, the next
+## time the chapters are executed.
 ##
 ## Hex values are written without "#": matplotlibrc reads "#" as a comment.
+##
+## Sizes are in points, and the page shows a figure at 96 px to the inch, so
+## 1 pt here is 1.33 px on screen. The body text is 18 px and a figure
+## caption 14.9 px. That holds while the figure fits the column, 572–746 px
+## on a desktop: up to 7 in wide a figure shows at its own size, and wider it
+## is scaled down, text and all. (Quarto sets figure.figsize and figure.dpi
+## itself, from fig-width / fig-height; setting them here does nothing.)
 
+## ------------------------------------------------------------- colour ---
 ## Five colours for data, in order. Not the page palette: two lines on a plot
 ## have to be told apart by every reader, and the page's indigo, teal and
 ## amber share one lightness, which leaves red-green colour-blind readers
@@ -34,6 +44,104 @@ ytick.color:      4a4640
 xtick.labelcolor: 2a2927
 ytick.labelcolor: 2a2927
 
-## A warm grey as dark as matplotlib's own b0b0b0, so a chapter's
-## grid(alpha=0.3) still shows.
-grid.color:       a8a196
+## --------------------------------------------------------- background ---
+## White, and nothing else: in light mode the page multiplies a figure onto
+## its paper, so white becomes the paper and the figure has no edge. A tinted
+## plot area would print as a grey box in the PDF and on a projector.
+figure.facecolor:  white
+axes.facecolor:    white
+savefig.facecolor: white
+
+## --------------------------------------------------------------- type ---
+## The page's faces: Inter, and Noto Sans JP for whatever Inter lacks. Named
+## as a list, so matplotlib takes each character from the first font that
+## has it — Latin and digits from Inter, kana and kanji from Noto Sans JP.
+## Both are in fonts/ (sitecustomize.py hands them to matplotlib, the hub's
+## scripts/build-figure-fonts.py makes them), so no machine needs them
+## installed. Math is Computer Modern, the face KaTeX sets the page's math in.
+##
+## A chapter that asks for "sans-serif" gets Inter alone: a generic family
+## resolves to one font, and Japanese set in it prints as boxes.
+font.family:      Inter, Noto Sans JP
+font.sans-serif:  Inter, Noto Sans JP, DejaVu Sans
+mathtext.fontset: cm
+
+## Axis labels at the caption's size, everything else a step under it.
+font.size:        10
+axes.labelsize:   11
+axes.titlesize:   11.5
+axes.titleweight: 600
+axes.titlepad:    9
+axes.labelpad:    5
+xtick.labelsize:  10
+ytick.labelsize:  10
+legend.fontsize:  10
+legend.title_fontsize: 10
+figure.titlesize:   12
+figure.titleweight: 600
+axes.formatter.use_mathtext: True
+
+## -------------------------------------------------------------- lines ---
+## Three weights. Data is the heaviest thing in a figure: 1.8 pt is 2.4 px,
+## against 1.3 px for a stroke of the label text beside it. The frame and
+## ticks match that text stroke; the grid is the lightest.
+lines.linewidth:       1.8
+lines.markersize:      6
+lines.solid_capstyle:  round
+lines.solid_joinstyle: round
+patch.linewidth:       0.8
+hatch.linewidth:       0.8
+errorbar.capsize:      3
+
+## -------------------------------------------------------------- frame ---
+## Two axis lines, not a box: the paper is the figure's ground, so a frame
+## on all four sides only fences the data in.
+axes.linewidth:     0.9
+axes.spines.top:    False
+axes.spines.right:  False
+axes.axisbelow:     True
+xtick.direction:    out
+ytick.direction:    out
+xtick.major.size:   4
+ytick.major.size:   4
+xtick.major.width:  0.9
+ytick.major.width:  0.9
+xtick.minor.size:   2.5
+ytick.minor.size:   2.5
+xtick.minor.width:  0.7
+ytick.minor.width:  0.7
+xtick.major.pad:    4
+ytick.major.pad:    4
+
+## Off unless a chapter asks for it. The colour and alpha together come out
+## as a faint warm grey; alpha is 0.3 because that is what the chapters that
+## pass one write, so a grid looks the same with or without it.
+grid.color:      8a8377
+grid.alpha:      0.3
+grid.linewidth:  0.7
+
+## ------------------------------------------------------------- legend ---
+## No border; a nearly opaque white ground so a legend that lands on the data
+## still reads, and disappears into the paper where it does not.
+legend.frameon:       True
+legend.framealpha:    0.88
+legend.edgecolor:     none
+legend.fancybox:      False
+legend.borderpad:     0.5
+legend.handlelength:  1.8
+legend.labelspacing:  0.45
+
+## ------------------------------------------------------------ boxplot ---
+## Ink for the box, vermilion for the median — the one mark to read.
+boxplot.boxprops.color:        2a2927
+boxplot.boxprops.linewidth:    1.1
+boxplot.whiskerprops.color:    2a2927
+boxplot.whiskerprops.linewidth: 1.1
+boxplot.capprops.color:        2a2927
+boxplot.capprops.linewidth:    1.1
+boxplot.medianprops.color:     bc3817
+boxplot.medianprops.linewidth: 1.8
+boxplot.flierprops.marker:          o
+boxplot.flierprops.markersize:      5
+boxplot.flierprops.markeredgecolor: 4a4640
+boxplot.flierprops.markeredgewidth: 0.9

@@ -39,3 +39,18 @@ $exercise-tint:         .06 !default;
 
 // Multiplying a figure onto dark paper would black it out; leave it as drawn.
 $figure-blend:          normal !default;
+
+// A figure drawn by a code cell is a different matter: it is line work on
+// white in the palette of figures/matplotlibrc, so it can be turned into a
+// dark figure without drawing it twice. invert + hue-rotate(180deg) adds the
+// same amount to all three channels — it flips lightness and keeps hue — so
+// white becomes black, the ink becomes #dbdad9, indigo #81c2e3 and vermilion
+// #ff9f83: this file's own palette to within a few percent. `screen` then
+// drops the black onto the paper, as `multiply` drops white in light mode.
+// Every colour of the cycle stays 3.7:1 or better against the paper.
+//
+// A light colour comes out dark and the other way round, so a figure whose
+// lightness means something (a photograph, a heat map the text reads as
+// "brighter is higher") opts out with `#| classes: no-invert`.
+$plot-filter:           unquote("invert(1) hue-rotate(180deg)") !default;
+$plot-blend:            screen !default;

@@ -37,3 +37,8 @@ $exercise-tint:         .045 !default;
 // on a printed page: white becomes the paper colour, everything else moves
 // by a few percent at most.
 $figure-blend:          multiply !default;
+
+// A figure drawn by a code cell needs nothing beyond that in light mode;
+// theme-dark.scss turns it into a dark figure.
+$plot-filter:           none !default;
+$plot-blend:            multiply !default;

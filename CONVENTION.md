@@ -301,23 +301,42 @@ Change these in `_brand.yml` and the theme files, never in a book.
 
 ### Figures
 
-Figure colours live in one file, `_extensions/lecture/figures/matplotlibrc`.
-Every chapter Quarto executes loads it, as long as the book has the
-`_environment` file from `templates/environment` at its root (and in
-`slides/`). So a chapter's code never writes a colour value:
+How a figure looks lives in one file, `_extensions/lecture/figures/matplotlibrc`:
+colours, type (Inter and Noto Sans JP, the page's faces, from `figures/fonts/`;
+math in Computer Modern), sizes, line weights, the open frame (left and bottom
+axes only), legend and grid. Every chapter Quarto executes loads it, as long
+as the book has the `_environment` file from `templates/environment` at its
+root (and in `slides/`). So a chapter's code says what to draw, not how it
+looks — no font, font size, line width, spine or background unless that one
+figure has to differ — and never writes a colour value:
 
 | Write | For | Not |
 |---|---|---|
 | nothing | a plot with one series — it is drawn in `C0` | `color="steelblue"` |
 | `"C0"` … `"C4"` | 藍, 朱, 青竹, 山吹, 藤, in that order | `"#2c5f8a"`, `"red"`, `"tab:blue"` |
 | `"C1"` | the series that matters: a fitted line, an optimum, a highlighted point | |
+| `"C3"` | fills and thick marks only — it is too light for a thin line | |
 | `"black"`, `"gray"`, `"0.85"` | neutrals: axes, reference lines, light fills | `"#e7ecf1"` |
+| `("C1", 0.1)` | a tint: a colour and its alpha | a hex for the tint |
 
 `"C0"` to `"C4"` are matplotlib's own names for the colour cycle, so the same
 code still runs anywhere, in matplotlib's default colours. Prose and captions
 may name a colour (赤い点, 青い線): C0 reads as blue, C1 as red, C2 as green.
 
-A changed colour reaches a figure only when its chapter is executed again.
+Text set in a figure is in the same type as the caption under it only while
+the figure shows at its own size: a desktop column is 572–746 px, so keep
+`figsize` to 7 in wide or less. A wider figure is scaled down, its text with
+it.
+
+Japanese text in a figure needs no setup. One exception: a function that asks
+for `"sans-serif"` by default — networkx's `draw_networkx_labels` — gets Inter
+alone, so pass it `font_family=plt.rcParams["font.family"]`.
+
+In dark mode the page turns a code cell's figure into a dark one with a CSS
+filter, so no figure is drawn twice. A figure whose lightness carries meaning
+(a photograph, a heat map) opts out with `#| classes: no-invert`.
+
+A changed style reaches a figure only when its chapter is executed again.
 `freeze: auto` re-runs a chapter only when its source changes, so after
 editing the style, delete the book's `_freeze/` and render locally, then
 commit `_freeze/`.

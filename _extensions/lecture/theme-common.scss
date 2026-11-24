@@ -330,3 +330,12 @@ figure img,
 .cell-output-display img {
   mix-blend-mode: $figure-blend;
 }
+
+// A figure drawn by a code cell is in the palette of figures/matplotlibrc on
+// a white ground, which dark mode can recolour ($plot-filter, see
+// theme-dark.scss). A picture that has to keep its colours — a photograph
+// shown by a cell — says so with `#| classes: no-invert`.
+.cell:not(.no-invert) .cell-output-display img {
+  filter: $plot-filter;
+  mix-blend-mode: $plot-blend;
+}
