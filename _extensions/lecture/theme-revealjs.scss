@@ -13,6 +13,7 @@
 $ink:      $brand-ink !default;
 $slate:    $brand-slate !default;
 $mist:     $brand-mist !default;
+$sand:     $brand-sand !default;
 $paper:    $brand-paper !default;
 $indigo:   $brand-indigo !default;
 $vermilion: $brand-vermilion !default;
@@ -41,15 +42,16 @@ $text-muted:                          $slate !default;
 $border-radius:                       .25em !default;
 $selection-bg:                        rgba($indigo, .25) !default;
 
-// Code. The block sits on a 3% indigo tint of paper — the book's $pre-bg,
-// derived instead of restated.
-$code-block-bg:                       mix($indigo, $paper, 3%) !default;
+// Code, as in the book (theme-common.scss, theme.scss). A block sits on sand,
+// the darker sheet. Inline code is told apart by its face and that same
+// ground, not by a colour of its own: vermilion is the slide's one emphasis.
+$code-block-bg:                       $sand !default;
 $code-block-border-color:             $mist !default;
 $code-block-font-size:                .55em !default;
 $code-block-height:                   430px !default;
 $code-inline-font-size:               .875em !default;
-$code-color:                          $crimson !default;
-$code-bg:                             rgba($indigo, .06) !default;
+$code-color:                          $ink !default;
+$code-bg:                             $sand !default;
 
 $table-border-color:                  $mist !default;
 
@@ -148,23 +150,39 @@ $dark-bg-code-color:                  $mist !default;
 // ---------------------------------------------------------------- chrome ---
 // Footer and slide number are fixed to the viewport, not scaled with the
 // slide, so they are set in px like Quarto's own. The footer sits left, clear
-// of the menu button; the number sits right on the same baseline.
+// of the menu button; the number sits right on the same baseline. Both take
+// their colour from $text-muted, above.
+//
+// The `div` in these selectors is not decoration. Quarto's footer.css is
+// loaded after this stylesheet and sets the same properties on
+// `.reveal .footer` and `.reveal .slide-number`; written with those selectors
+// the rules here lost to it on source order, and the footer stayed centred at
+// 18px — pushed 50px off centre by `left`, the one property that file leaves
+// alone.
 
-.reveal .footer {
+.reveal div.footer {
   left: 50px;
   right: auto;
   width: auto;
   bottom: 14px;
   text-align: left;
   font-size: 16px;
-  color: $slate;
 }
 
-.reveal .slide-number {
+.reveal div.slide-number {
   bottom: 14px;
   right: 22px;
   font-size: 16px;
-  color: $slate;
+}
+
+// On indigo — the title slide, a section break, a slide given a dark
+// background — both have to turn light. Quarto has rules for that, keyed on
+// a `has-dark-background` class its plugin never adds: it looks for the mark
+// on the slide's background layer, and reveal puts it on the slide and on
+// `.reveal`. So the number stayed slate on indigo. Read it from `.reveal`.
+.reveal.has-dark-background div.footer,
+.reveal.has-dark-background div.slide-number {
+  color: rgba($dark-bg-text-color, .75);
 }
 
 .reveal .progress {
@@ -215,11 +233,31 @@ $dark-bg-code-color:                  $mist !default;
 // ------------------------------------------------------------------- code ---
 
 .reveal {
-  // Same reason as the book: JetBrains Mono ships its ligatures in `calt`, so
-  // `!=` draws as ≠ and `<=` as ≤. A slide teaching what to type has to show
-  // the characters that get typed.
+  // The book's guard, for the same reason: a slide teaching what to type has
+  // to show the characters that get typed. IBM Plex Mono has no programming
+  // ligatures; a face that does — JetBrains Mono, which it replaced — draws
+  // `!=` as ≠ and `<=` as ≤ unless told not to.
   code, pre, kbd, samp {
     font-variant-ligatures: none;
+  }
+
+  // Quarto puts $code-block-bg on the `pre` and leaves the box around it to
+  // the syntax theme, whose cool grey showed as a band above and below the
+  // code. One ground for the whole block.
+  div.sourceCode {
+    background-color: $code-block-bg;
+  }
+
+  // Inline code is a chip of sand: the book's padding, in em.
+  :not(pre) > code {
+    padding: .12em .35em;
+    border-radius: .2em;
+  }
+
+  // On indigo — a section title with code in it — sand would put light text
+  // on a light chip.
+  section.has-dark-background :not(pre) > code {
+    background-color: rgba($dark-bg-text-color, .14);
   }
 
   pre {
@@ -342,4 +380,22 @@ $dark-bg-code-color:                  $mist !default;
   height: auto;
   max-height: 480px;
   object-fit: contain;
+}
+
+// The book lays a figure on its paper by multiplying, so a plot's white
+// ground becomes the paper (theme.scss, $figure-blend). On a slide that rule
+// alone does nothing: reveal makes each slide a stacking context of its own
+// and paints the slide's background in a separate layer, so inside the slide
+// there is nothing under the figure to multiply with, and the plot stayed a
+// white box on kinari. The cell's output box supplies the sheet — paper under
+// the drawing, which on a paper slide cannot be seen.
+//
+// Only a cell's figure has such a box. A Markdown image that Quarto stretches
+// is lifted out to sit directly in the slide and keeps its own ground.
+.reveal .slide .cell-output-display:has(img) {
+  background-color: $paper;
+
+  img {
+    mix-blend-mode: multiply;
+  }
 }

@@ -102,6 +102,20 @@ Confirm with the author before pushing unless they have already asked for it.
   `embed-resources: true` does not help — it yields a 32 MB file that still
   fetches KaTeX. The fix is to ship KaTeX inside this extension (~600 KB with
   woff2 fonts only) and point `html-math-method.url` at it; not done yet.
+- Quarto's reveal plugin ships its own `footer.css`, loaded **after** the
+  theme. A rule here on `.reveal .footer` or `.reveal .slide-number` with that
+  same selector loses on source order: until 1.6.1 the footer sat centred at
+  18px while `theme-revealjs.scss` said left and 16px. The rules are written
+  `.reveal div.footer` to outrank it. The same plugin never marks the footer
+  or the number as being on a dark slide (it looks for `has-dark-background`
+  on the background layer; reveal puts it on the slide and on `.reveal`), so
+  their light colour is keyed on `.reveal.has-dark-background`.
+- `mix-blend-mode` on a slide blends only **inside** the slide: each `section`
+  is its own stacking context and reveal paints the slide background in a
+  separate layer, so the book's multiply left every plot a white box on
+  kinari. Since 1.6.1 `.cell-output-display` carries a paper ground for the
+  figure to multiply with. A Markdown image that Quarto stretches is lifted
+  out of any wrapper and keeps its own ground.
 - `rebuild-all.yml` needs the `BOOKS_DISPATCH_TOKEN` secret (fine-grained PAT,
   every repo in its matrix, Contents: read and write). A repo added to the
   matrix but not to the PAT fails its dispatch with 404 (403 if public). An
