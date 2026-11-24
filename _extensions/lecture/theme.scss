@@ -9,20 +9,31 @@
 // `$brand-indigo` and friends, not these names, so a colour changed there
 // reaches links and Bootstrap's own components but not the theorem blocks or
 // borders until it is changed here too.
-$ink:                   #16212d !default;
-$slate:                 #5b6b7c !default;
-$mist:                  #e7ecf1 !default;
-$paper:                 #ffffff !default;
-$indigo:                #2c5f8a !default;
-$teal:                  #137a72 !default;
-$amber:                 #b06e00 !default;
-$crimson:               #b03535 !default;
+$ink:                   #2a2927 !default;
+$slate:                 #655f56 !default;
+$mist:                  #dad3c4 !default;
+$sand:                  #f1ece0 !default;
+$paper:                 #faf7f0 !default;
+$indigo:                #165e83 !default;
+$vermilion:             #bc3817 !default;
+$teal:                  #2f6f5e !default;
+$amber:                 #8f5b00 !default;
+$crimson:               #9e3d3f !default;
 
-$code-bg:               rgba($indigo, .06) !default;
-$pre-bg:                #f7f9fb !default;
+$code-bg:               $sand !default;
+$pre-bg:                $sand !default;
 $table-striped-bg:      rgba($indigo, .03) !default;
 
-// Background tint of the theorem-type blocks, as the alpha of their accent.
-$theorem-tint:          .035 !default;
-$example-tint:          .04 !default;
-$exercise-tint:         .05 !default;
+// Background tint of the theorem-type blocks, as the alpha of their accent:
+// vermilion, indigo and ink in that order (see theme-common.scss). Every
+// accent still reads at 4.5:1 or better on its own tint at these. Ink needs
+// less than the two hues to show as much.
+$theorem-tint:          .06 !default;
+$example-tint:          .06 !default;
+$exercise-tint:         .045 !default;
+
+// Plots and scanned figures come with a white ground, which shows as a box
+// on kinari paper. Multiplying lays the image on the paper the way ink sits
+// on a printed page: white becomes the paper colour, everything else moves
+// by a few percent at most.
+$figure-blend:          multiply !default;

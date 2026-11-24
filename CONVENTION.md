@@ -287,17 +287,40 @@ by eye.
 
 ## 7. How the theme colours these
 
-From `_extensions/lecture/theme.scss` — the accent tells the reader the kind of
-block at a glance:
+From `_extensions/lecture/theme-common.scss` — the accent tells the reader the
+kind of block at a glance:
 
 | Block | Accent (light / dark) |
 |---|---|
-| `#exm-` example | teal `#137a72` / `#4bbfae` |
-| `#exr-` exercise | amber `#b06e00` / `#d9a441` |
-| `#thm-` `#lem-` `#cor-` `#prp-` `#def-` … | indigo `#2c5f8a` / `#6fa8dc` |
-| callouts | Quarto's own per-type colours |
+| `#def-` `#thm-` `#lem-` `#prp-` `#cor-` | vermilion `#bc3817` / `#f0916a` |
+| `#exm-` example | indigo `#165e83` / `#86b8dc` |
+| `#exr-` exercise | ink `#2a2927` / `#e9e5db` |
+| callouts | note indigo, tip teal, warning and caution amber, important crimson |
 
-Change these in `_brand.yml`, never in a book.
+Change these in `_brand.yml` and the theme files, never in a book.
+
+### Figures
+
+Figure colours live in one file, `_extensions/lecture/figures/matplotlibrc`.
+Every chapter Quarto executes loads it, as long as the book has the
+`_environment` file from `templates/environment` at its root (and in
+`slides/`). So a chapter's code never writes a colour value:
+
+| Write | For | Not |
+|---|---|---|
+| nothing | a plot with one series — it is drawn in `C0` | `color="steelblue"` |
+| `"C0"` … `"C4"` | 藍, 朱, 青竹, 山吹, 藤, in that order | `"#2c5f8a"`, `"red"`, `"tab:blue"` |
+| `"C1"` | the series that matters: a fitted line, an optimum, a highlighted point | |
+| `"black"`, `"gray"`, `"0.85"` | neutrals: axes, reference lines, light fills | `"#e7ecf1"` |
+
+`"C0"` to `"C4"` are matplotlib's own names for the colour cycle, so the same
+code still runs anywhere, in matplotlib's default colours. Prose and captions
+may name a colour (赤い点, 青い線): C0 reads as blue, C1 as red, C2 as green.
+
+A changed colour reaches a figure only when its chapter is executed again.
+`freeze: auto` re-runs a chapter only when its source changes, so after
+editing the style, delete the book's `_freeze/` and render locally, then
+commit `_freeze/`.
 
 ---
 

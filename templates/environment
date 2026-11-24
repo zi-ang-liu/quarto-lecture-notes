@@ -1,0 +1,10 @@
+# Shared by every lecture-note book that executes Python. Copy it to the book's
+# root as `_environment` (and to slides/ when the book has a slides project).
+# Source of truth: zi-ang-liu/quarto-lecture-notes/templates/environment
+#
+# Every chapter's Python loads the lecture extension's matplotlib style, so a
+# figure takes its colours from there and not from its own code. See
+# _extensions/zi-ang-liu/lecture/figures/. Python resolves these entries
+# against the chapter's folder, so there is one per depth: the book root, a
+# chapter folder, and a folder inside that.
+PYTHONPATH=_extensions/zi-ang-liu/lecture/figures:../_extensions/zi-ang-liu/lecture/figures:../../_extensions/zi-ang-liu/lecture/figures

@@ -15,6 +15,7 @@ $slate:    $brand-slate !default;
 $mist:     $brand-mist !default;
 $paper:    $brand-paper !default;
 $indigo:   $brand-indigo !default;
+$vermilion: $brand-vermilion !default;
 $teal:     $brand-teal !default;
 $amber:    $brand-amber !default;
 $crimson:  $brand-crimson !default;
@@ -246,32 +247,34 @@ $dark-bg-code-color:                  $mist !default;
 .reveal {
   .theorem, .lemma, .corollary, .proposition,
   .definition, .example, .exercise {
-    border-left: .18em solid $indigo;
-    background: rgba($indigo, .035);
+    border-left: .18em solid $vermilion;
+    background: rgba($vermilion, .06);
     padding: .5em .75em;
     margin: .6em 0;
     border-radius: 0 .25em .25em 0;
   }
 
+  // Statements (definitions, theorems) keep the default vermilion; the
+  // colours and tints are theme-common.scss's light-mode ones.
   .theorem-title {
-    color: $indigo;
+    color: $vermilion;
     margin-inline-end: .35em;
   }
 
   // #exm- — a worked example.
   .example {
-    border-left-color: $teal;
-    background: rgba($teal, .04);
+    border-left-color: $indigo;
+    background: rgba($indigo, .06);
 
-    .theorem-title { color: $teal; }
+    .theorem-title { color: $indigo; }
   }
 
   // #exr- — an exercise, deliberately a different accent from .example.
   .exercise {
-    border-left-color: $amber;
-    background: rgba($amber, .05);
+    border-left-color: $ink;
+    background: rgba($ink, .045);
 
-    .theorem-title { color: $amber; }
+    .theorem-title { color: $ink; }
   }
 }
 

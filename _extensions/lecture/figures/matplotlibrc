@@ -1,0 +1,39 @@
+## Figure style for every lecture book — the one place figure colours live.
+##
+## Every chapter that Quarto executes loads this file (see sitecustomize.py
+## beside it), so a chapter's code names colours by their slot — "C0" to "C4"
+## — and never by value. Changing a colour here changes it in every figure of
+## every book, the next time the chapters are executed.
+##
+## Hex values are written without "#": matplotlibrc reads "#" as a comment.
+
+## Five colours for data, in order. Not the page palette: two lines on a plot
+## have to be told apart by every reader, and the page's indigo, teal and
+## amber share one lightness, which leaves red-green colour-blind readers
+## with three greys. These keep the page's indigo and vermilion and spread the
+## other three in lightness. Any two are at least 15.7 apart in OKLab (x100)
+## for normal vision and 9.5 under protanopia, deuteranopia or tritanopia.
+##
+##   C0  藍  indigo     the default series; what a single plot is drawn in
+##   C1  朱  vermilion  the series that matters: a fitted line, an optimum
+##   C2  青竹 green
+##   C3  山吹 yellow    light; use it for fills and thick marks, not thin lines
+##   C4  藤  purple
+##
+## Neutrals are written as matplotlib greys ("black", "gray", "0.85"). The
+## page lays every figure on its paper by multiplying, so a neutral grey
+## takes on the paper's warmth by itself.
+axes.prop_cycle: cycler('color', ['165e83', 'bc3817', '2e8a6b', 'd9a020', '9a6fb0'])
+
+## Text in the page's ink; frame and ticks a step lighter so the data leads.
+text.color:       2a2927
+axes.labelcolor:  2a2927
+axes.edgecolor:   4a4640
+xtick.color:      4a4640
+ytick.color:      4a4640
+xtick.labelcolor: 2a2927
+ytick.labelcolor: 2a2927
+
+## A warm grey as dark as matplotlib's own b0b0b0, so a chapter's
+## grid(alpha=0.3) still shows.
+grid.color:       a8a196

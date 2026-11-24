@@ -4,14 +4,16 @@
 // values that have to invert. The rules are in theme-common.scss, shared with
 // light mode, so nothing structural belongs here.
 
-$ink:                   #dfe6ee !default;
-$slate:                 #9aa9b8 !default;
-$mist:                  #2b3440 !default;
-$paper:                 #131a21 !default;
-$indigo:                #6fa8dc !default;
-$teal:                  #4bbfae !default;
-$amber:                 #d9a441 !default;
-$crimson:               #e07a7a !default;
+$ink:                   #e9e5db !default;
+$slate:                 #a49f94 !default;
+$mist:                  #3a3c42 !default;
+$sand:                  #24262a !default;
+$paper:                 #1a1b1e !default;
+$indigo:                #86b8dc !default;
+$vermilion:             #f0916a !default;
+$teal:                  #7fc4a8 !default;
+$amber:                 #d9b36a !default;
+$crimson:               #e58b8b !default;
 
 $body-bg:               $paper !default;
 
@@ -25,12 +27,15 @@ $link-color:            $indigo !default;  // links, cross-refs, active TOC entr
 $body-secondary:        $slate !default;   // section numbers, captions, margin notes, blockquotes
 $body-secondary-color:  $slate !default;   // Bootstrap's muted text, e.g. table captions
 
-$code-bg:               rgba($indigo, .12) !default;
-$pre-bg:                #1a222b !default;
+$code-bg:               $sand !default;
+$pre-bg:                $sand !default;
 $table-striped-bg:      rgba($indigo, .06) !default;
 
 // Background tint of the theorem-type blocks, as the alpha of their accent —
 // stronger than light mode's, or the boxes vanish on dark paper.
-$theorem-tint:          .09 !default;
-$example-tint:          .09 !default;
-$exercise-tint:         .1 !default;
+$theorem-tint:          .1 !default;
+$example-tint:          .1 !default;
+$exercise-tint:         .06 !default;
+
+// Multiplying a figure onto dark paper would black it out; leave it as drawn.
+$figure-blend:          normal !default;

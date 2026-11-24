@@ -25,14 +25,30 @@ $border-radius-sm:      .25rem !default;
 $border-radius-lg:      .5rem !default;
 
 // The body is _brand.yml's 18px, a little over 1rem, so an h4 needs more than
-// that to read as a heading above it.
-$headings-font-weight:  600 !default;
+// that to read as a heading above it. 700 is for the mincho chapter title,
+// whose strokes are thinner than a gothic's at the same weight; h2 and below
+// set their own 600 where they go back to the body face.
+$headings-font-weight:  700 !default;
 $h1-font-size:          1.9rem !default;
 $h2-font-size:          1.5rem !default;
 $h3-font-size:          1.22rem !default;
 $h4-font-size:          1.1rem !default;
 
-$code-color:            $crimson !default;
+// Inline code is told apart by its face and the sand ground it sits on, not
+// by a colour of its own: vermilion is the page's one emphasis.
+$code-color:            $ink !default;
+// Quarto's own ground for a code cell is a cool Bootstrap grey, which reads
+// as a stain on warm paper.
+$code-block-bg:         $sand !default;
+
+// Quarto colours callouts from Bootstrap's stock palette — a saturated blue,
+// green, orange and red that belong to no other part of the page. Map each
+// kind onto the palette, the same way theme-revealjs.scss does for slides.
+$callout-color-note:      $indigo !default;
+$callout-color-tip:       $teal !default;
+$callout-color-warning:   $amber !default;
+$callout-color-caution:   $amber !default;
+$callout-color-important: $crimson !default;
 $table-border-color:    $mist !default;
 
 $toc-font-size:         .85rem !default;
@@ -61,6 +77,51 @@ h2 {
   border-bottom: 1px solid $mist;
   padding-bottom: .3rem;
   margin-top: 2.75rem;
+}
+
+// Mincho (_brand.yml's heading family) is for the chapter title alone. Its
+// horizontal strokes are 2.7% of the em: 0.7px in an h2 and 0.5px at body
+// size on a 1x screen, a grey hairline on a classroom projector. The chapter
+// title is the one line large enough to carry it, so every heading below it
+// goes back to the body face.
+h2, h3, h4, h5, h6 {
+  font-family: var(--bs-body-font-family);
+  font-weight: 600;
+}
+
+// Indigo for a section title, vermilion for its number — the same split the
+// rest of the page keeps: indigo is structure, vermilion marks.
+main.content h2 {
+  color: $indigo;
+
+  .header-section-number { color: $vermilion; }
+}
+
+// Quarto leaves 1rem under the title block and zeroes the top margin of the
+// first h2, so a 32px chapter title sat 17px above whatever came next — less
+// than the gap between two paragraphs looks. Below 992px it is worse: Quarto's
+// `body.nav-sidebar #title-block-header` sets the margin to 0 and the first
+// line touches the title. Both selectors here outrank Quarto's, which are
+// compiled after this file.
+header#title-block-header,
+body.nav-sidebar header#title-block-header {
+  margin-block-end: 2rem;
+}
+
+// The chapter number is set as a seal: a paper-coloured numeral on vermilion.
+// Appendix titles ("付録 A — …") carry no .chapter-number and stay plain.
+h1.title .chapter-number {
+  display: inline-block;
+  min-width: 1.7em;
+  padding: .2em .3em .22em;
+  margin-inline-end: .1em;
+  border-radius: $border-radius-sm;
+  background: $vermilion;
+  color: $paper;
+  font-size: .76em;
+  line-height: 1.2;
+  text-align: center;
+  vertical-align: .16em;
 }
 
 h3 { margin-top: 2rem; }
@@ -124,10 +185,24 @@ code:not(.sourceCode) {
 // Theorem-like blocks show up in every one of these books; give them a
 // consistent look instead of leaving them as bare paragraphs. The tint
 // strengths are per mode: dark paper needs more to show at all.
+//
+// Quarto gives every one of these the class `theorem` and adds the kind
+// beside it (`theorem definition`, `theorem example`); a theorem proper has
+// `theorem` alone.
+//
+// Three kinds, three colours. Five of every six blocks in the books are an
+// example or an exercise, so those two decide what a page looks like:
+//   statements (#def- #thm- #lem- #prp- #cor-)  vermilion — few, and the
+//                                               thing to remember
+//   #exm-                                       indigo — the most common
+//   #exr-                                       ink — they come in runs at
+//                                               the end of a chapter
+// Every pair is 20 or more apart in OKLab (x100), and 15 or more under any
+// colour-vision deficiency. The teal/amber pair this replaced was 15 and 9.
 
 .theorem, .lemma, .corollary, .proposition, .definition, .example, .exercise {
-  border-left: $callout-border-width solid $indigo;
-  background: rgba($indigo, $theorem-tint);
+  border-left: $callout-border-width solid $vermilion;
+  background: rgba($vermilion, $theorem-tint);
   padding: .85rem 1.1rem;
   margin: 1.4rem 0;
   border-radius: 0 $border-radius $border-radius 0;
@@ -138,25 +213,26 @@ code:not(.sourceCode) {
 // own line would be a near-empty one. It only needs room to breathe against a
 // body that often opens on math.
 .theorem-title {
-  color: $indigo;
+  color: $vermilion;
   margin-inline-end: .35em;
 }
 
 // #exm- — a worked example the reader follows along with.
 .example {
-  border-left-color: $teal;
-  background: rgba($teal, $example-tint);
+  border-left-color: $indigo;
+  background: rgba($indigo, $example-tint);
 
-  .theorem-title { color: $teal; }
+  .theorem-title { color: $indigo; }
 }
 
 // #exr- — an exercise the reader is asked to do. Deliberately a different
-// accent from .example so the two are told apart at a glance.
+// accent from .example so the two are told apart at a glance: no hue at all,
+// the colour of the text itself.
 .exercise {
-  border-left-color: $amber;
-  background: rgba($amber, $exercise-tint);
+  border-left-color: $ink;
+  background: rgba($ink, $exercise-tint);
 
-  .theorem-title { color: $amber; }
+  .theorem-title { color: $ink; }
 }
 
 .proof {
@@ -246,4 +322,11 @@ figcaption {
 .cell-output-display img {
   max-width: 100%;
   height: auto;
+}
+
+// How a figure meets the paper is per mode ($figure-blend, see theme.scss):
+// on light paper its white ground is multiplied away.
+figure img,
+.cell-output-display img {
+  mix-blend-mode: $figure-blend;
 }

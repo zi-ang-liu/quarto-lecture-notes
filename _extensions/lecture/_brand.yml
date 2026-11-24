@@ -3,14 +3,20 @@ meta:
 
 color:
   palette:
-    ink: "#16212d"
-    slate: "#5b6b7c"
-    mist: "#e7ecf1"
-    paper: "#ffffff"
-    indigo: "#2c5f8a"
-    teal: "#137a72"
-    amber: "#b06e00"
-    crimson: "#b03535"
+    # 和色: sumi ink on kinari paper. Two colours do the work — indigo (藍)
+    # carries structure, vermilion (朱) is kept for emphasis. `sand` is the
+    # darker sheet that code sits on. teal, amber and crimson keep their
+    # names and hues from before: figures in the books hard-code them.
+    ink: "#2a2927"
+    slate: "#655f56"
+    mist: "#dad3c4"
+    sand: "#f1ece0"
+    paper: "#faf7f0"
+    indigo: "#165e83"
+    vermilion: "#bc3817"
+    teal: "#2f6f5e"
+    amber: "#8f5b00"
+    crimson: "#9e3d3f"
   foreground: ink
   background: paper
   primary: indigo
@@ -24,27 +30,41 @@ color:
 
 typography:
   fonts:
+    # Body text is two families read as one: Inter draws Latin and digits,
+    # Noto Sans JP everything Inter has no glyph for. Their regular weights
+    # put down the same amount of ink, so a mixed line keeps an even colour.
+    - family: Inter
+      source: google
+      weight: [400, 500, 600, 700]
+      style: [normal, italic]
     - family: Noto Sans JP
       source: google
-      weight: [300, 400, 500, 700]
+      weight: [400, 500, 600, 700]
       style: normal
-    - family: JetBrains Mono
+    - family: Shippori Mincho
+      source: google
+      weight: [700]
+      style: normal
+    - family: IBM Plex Mono
       source: google
       weight: [400, 700]
       style: normal
   base:
-    family: Noto Sans JP
+    # A stack, not one name: Quarto passes it through as written.
+    family: Inter, Noto Sans JP
     weight: 400
     # Body text. The rem is 17px (theme-common.scss), which headings and the
     # sidebar are sized in, so this is not the root size.
     size: 18px
     line-height: 1.75
   headings:
-    family: Noto Sans JP
-    weight: 600
+    # Mincho for the chapter title only. theme-common.scss hands h2 and below
+    # back to the body face, where mincho strokes get too thin.
+    family: Shippori Mincho
+    weight: 700
     line-height: 1.35
   monospace:
-    family: JetBrains Mono
+    family: IBM Plex Mono
     size: 0.88em
   link:
     color: primary
