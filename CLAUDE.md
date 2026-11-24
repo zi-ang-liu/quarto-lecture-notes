@@ -18,12 +18,15 @@ quarto-lecture-notes                    ← you are here
 │   ├── lecture-revealjs.lua  slides: paints the title and section slides
 │   ├── footer.html      slides: running footer filled from the subtitle
 │   ├── _book.yml        shared book: keys (author, footer, search, sidebar)
-│   └── preamble.tex     algorithm/algpseudocode for PDF
+│   ├── preamble.tex     algorithm/algpseudocode for PDF
+│   └── figures/         matplotlibrc: the figure palette C0–C4, and the
+│                        sitecustomize.py that loads it into every chapter
 ├── CONVENTION.md        ← the writing standard. Read before editing any .qmd
 ├── scripts/
 │   ├── lint-conventions.py   mechanical checks across all seven repos
 │   └── update-books.sh       quarto update across local clones
 ├── templates/gitignore  the identical .gitignore all seven repos use
+├── templates/environment  a book's _environment: puts figures/ on PYTHONPATH
 └── .github/workflows/
     ├── book.yml         reusable build+publish, called by each book;
     │                    also publishes a book's slides/ under <site>/slides/
@@ -131,6 +134,13 @@ Confirm with the author before pushing unless they have already asked for it.
   `$body-secondary` and `$body-secondary-color` in `theme-dark.scss`. A colour
   added to the brand file (a `typography` colour, say) needs its dark value
   there too.
+- Figure colours come from `figures/matplotlibrc` only in a book that has
+  `_environment` (copied from `templates/environment`), and only when a
+  chapter re-executes — `_freeze/` keeps the old PNGs. Since 1.5.0 only
+  data-science-book has it; the other books still hard-code the 1.4 palette
+  (`#2c5f8a`, `#b03535`, …) in their plotting code. Quarto's `_environment`
+  does not expand `${QUARTO_PROJECT_DIR}`, hence one relative PYTHONPATH
+  entry per folder depth and the sitecustomize.py hop.
 - Wikimedia rate-limits pandoc's image fetches (HTTP 429), so a **PDF** render
   of a chapter that hot-links Wikimedia images fails. HTML is unaffected — the
   browser fetches them — but ship local copies of CC-licensed images if the
